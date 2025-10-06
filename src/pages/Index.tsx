@@ -6,6 +6,7 @@ import ServiceCard from "@/components/ServiceCard";
 import TemplateCard from "@/components/TemplateCard";
 import MetricCard from "@/components/MetricCard";
 import CTASection from "@/components/CTASection";
+import VapiWidget from "@/components/VapiWidget";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -282,6 +283,9 @@ const Index = () => {
       />
 
       <Footer />
+      
+      {/* Vapi Voice Agent Widget */}
+      <VapiWidget />
     </div>
   );
 };
