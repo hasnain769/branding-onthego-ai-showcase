@@ -274,6 +274,25 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Partner Banner Section */}
+      <section className="py-16 bg-muted/50 border-y border-border">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+              💼 Partner With Us — Earn Income in the AI Industry
+            </h2>
+            <p className="text-lg text-muted-foreground mb-6">
+              Want to launch your own AI business without the tech headaches?<br />
+              Our Partner Program gives you a <strong>done-for-you system</strong> — your own AI voice agent, 
+              landing page, training, and commissions on every sale.
+            </p>
+            <Button variant="hero" size="lg" asChild>
+              <Link to="/partners">Learn More</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <CTASection
         title="Let's automate your business today"
