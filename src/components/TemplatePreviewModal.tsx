@@ -149,7 +149,7 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
           </div>
 
           {/* Widget Container */}
-          <div ref={widgetContainerRef} className="fixed bottom-4 right-4 z-50" />
+          <div ref={widgetContainerRef} />
         </div>
       </DialogContent>
     </Dialog>

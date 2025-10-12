@@ -7,15 +7,6 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const Templates = () => {
-  const [filter, setFilter] = useState("all");
-  const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-
-  const handlePreview = (template: typeof templates[0]) => {
-    setSelectedTemplate(template);
-    setIsPreviewOpen(true);
-  };
-
   const templates = [
     {
       icon: Store,
@@ -81,6 +72,16 @@ const Templates = () => {
       features: ["Product finder", "Inventory check", "Store information", "Customer feedback"],
     },
   ];
+
+  const [filter, setFilter] = useState("all");
+  const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  const handlePreview = (template: typeof templates[0]) => {
+    console.log("Opening preview for:", template.title);
+    setSelectedTemplate(template);
+    setIsPreviewOpen(true);
+  };
 
   const categories = [
     { id: "all", label: "All Templates" },
