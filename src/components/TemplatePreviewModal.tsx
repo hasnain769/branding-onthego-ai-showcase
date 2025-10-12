@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -19,20 +19,41 @@ interface TemplatePreviewModalProps {
 }
 
 const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModalProps) => {
-  const widgetContainerRef = useRef<HTMLDivElement>(null);
+  const shouldShowVapiWidget = template?.title === "Restaurant Reservation Bot";
+  const shouldShowFastbotsWidget = template?.title === "Salon & Spa Booking Bot";
+  const vapiIframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    if (isOpen && widgetContainerRef.current) {
-      // Clear any existing widget
-      widgetContainerRef.current.innerHTML = '';
-      
-      // Create and append the Vapi widget
-      const vapiWidget = document.createElement('vapi-widget');
-      vapiWidget.setAttribute('assistant-id', 'c72f770b-2c30-4021-a81e-6a4f85f176e9');
-      vapiWidget.setAttribute('public-key', '992bd5fb-c74c-4955-9371-4ae0b3aec062');
-      widgetContainerRef.current.appendChild(vapiWidget);
+    if (isOpen && shouldShowVapiWidget && vapiIframeRef.current) {
+      // Inject Vapi widget into iframe for Restaurant Reservation Bot
+      const iframeDoc = vapiIframeRef.current.contentDocument;
+      if (iframeDoc) {
+        iframeDoc.open();
+        iframeDoc.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <style>
+                body { margin: 0; padding: 0; overflow: hidden; }
+              </style>
+            </head>
+            <body>
+              <vapi-widget 
+                assistant-id="c72f770b-2c30-4021-a81e-6a4f85f176e9" 
+                public-key="992bd5fb-c74c-4955-9371-4ae0b3aec062">
+              </vapi-widget>
+              <script
+                src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js"
+                async
+                type="text/javascript">
+              </script>
+            </body>
+          </html>
+        `);
+        iframeDoc.close();
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, shouldShowVapiWidget]);
 
   if (!template) return null;
 
@@ -148,8 +169,34 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
             </div>
           </div>
 
-          {/* Widget Container */}
-          <div ref={widgetContainerRef} />
+          {/* Vapi Widget - Only for Restaurant Reservation Bot */}
+          {shouldShowVapiWidget && (
+            <div className="space-y-3">
+              <h3 className="font-semibold text-lg">Live Voice Demo:</h3>
+              <div className="flex justify-center">
+                <iframe
+                  ref={vapiIframeRef}
+                  style={{ width: "100%", height: "100px", border: "none" }}
+                  title="Vapi Voice Widget"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Fastbots Chatbot Widget - Only for Salon & Spa Booking Bot */}
+          {shouldShowFastbotsWidget && (
+            <div className="space-y-3">
+              <h3 className="font-semibold text-lg">Live Chat Demo:</h3>
+              <div className="flex justify-center">
+                <iframe
+                  style={{ width: "400px", height: "600px" }}
+                  src="https://app.fastbots.ai/embed/cmalkz9s50dlsn8lt1jyxyr83"
+                  title="Salon & Spa Booking Chatbot"
+                  className="border border-border rounded-lg shadow-lg"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
