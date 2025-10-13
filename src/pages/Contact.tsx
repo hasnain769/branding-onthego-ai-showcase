@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, PhoneCall } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -44,6 +44,10 @@ const Contact = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleCallAI = () => {
+    window.location.href = "tel:+13632076443";
   };
 
   return (
@@ -152,11 +156,28 @@ const Contact = () => {
                 </form>
               </div>
 
-              <div className="mt-8 p-6 bg-muted/30 rounded-xl border border-border">
-                <p className="text-sm text-muted-foreground">
-                  <strong>Prefer a live chat?</strong> Try our AI demo bot now to see how our 
-                  technology works in real-time.
-                </p>
+              <div className="mt-8 p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
+                <div className="flex items-start gap-4">
+                  <PhoneCall className="text-primary flex-shrink-0 mt-1" size={24} />
+                  <div className="flex-1">
+                    <p className="font-semibold mb-2">
+                      Prefer to talk with our AI Agent?
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Call our AI assistant now to experience how our technology works in real-time. 
+                      Get instant answers to your questions 24/7.
+                    </p>
+                    <Button 
+                      onClick={handleCallAI}
+                      variant="outline"
+                      size="lg"
+                      className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+                    >
+                      <PhoneCall size={20} className="mr-2" />
+                      Call AI Agent: +1 (363) 207-6443
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
 
