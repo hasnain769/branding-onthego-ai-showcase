@@ -156,14 +156,14 @@ const Contact = () => {
                 </form>
               </div>
 
-              <div className="mt-8 p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
-                <div className="flex items-start gap-4">
+              <div className="mt-8 p-4 sm:p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
+                <div className="flex flex-col sm:flex-row items-start gap-4">
                   <PhoneCall className="text-primary flex-shrink-0 mt-1" size={24} />
-                  <div className="flex-1">
-                    <p className="font-semibold mb-2">
+                  <div className="flex-1 w-full">
+                    <p className="font-semibold mb-2 text-sm sm:text-base">
                       Prefer to talk with our AI Agent?
                     </p>
-                    <p className="text-sm text-muted-foreground mb-4">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-4">
                       Call our AI assistant now to experience how our technology works in real-time. 
                       Get instant answers to your questions 24/7.
                     </p>
@@ -171,10 +171,10 @@ const Contact = () => {
                       onClick={handleCallAI}
                       variant="outline"
                       size="lg"
-                      className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+                      className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm sm:text-base"
                     >
-                      <PhoneCall size={20} className="mr-2" />
-                      Call AI Agent: +1 (363) 207-6443
+                      <PhoneCall size={18} className="mr-2 flex-shrink-0" />
+                      <span className="truncate">Call AI Agent: +1 (363) 207-6443</span>
                     </Button>
                   </div>
                 </div>
