@@ -15,29 +15,72 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const GOOGLE_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdi1qPJF9-nvmFTuFcfEtQc3OslW54WuzDj4EQjXZTTzrqfEw/formResponse";
+
+const FIELD_IDS = {
+  name: "entry.208529617",
+  email: "entry.829404065",
+  phone: "entry.408120186",
+  company: "entry.2034433684",
+  service: "entry.1377611517",
+  message: "entry.1045858748",
+};
+
 const Contact = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     company: "",
     service: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
-    setFormData({
-      name: "",
-      email: "",
-      company: "",
-      service: "",
-      message: "",
-    });
+    setIsSubmitting(true);
+
+    const formBody = new FormData();
+    formBody.append(FIELD_IDS.name, formData.name);
+    formBody.append(FIELD_IDS.email, formData.email);
+    formBody.append(FIELD_IDS.phone, formData.phone);
+    formBody.append(FIELD_IDS.company, formData.company);
+    formBody.append(FIELD_IDS.service, formData.service);
+    formBody.append(FIELD_IDS.message, formData.message);
+
+    try {
+      await fetch(GOOGLE_FORM_URL, {
+        method: "POST",
+        body: formBody,
+        mode: "no-cors",
+      });
+
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        service: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Form submission error:", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -95,9 +138,23 @@ const Contact = () => {
                       name="email"
                       type="email"
                       value={formData.email}
-                      onChange={handleChange}
+                      onChange={handleChange} 
                       required
                       placeholder="your@email.com"
+                      className="mt-2"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="phone">Phone </Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                    
+                      placeholder="+1 (555) 123-4567"
                       className="mt-2"
                     />
                   </div>
@@ -127,12 +184,12 @@ const Contact = () => {
                         <SelectValue placeholder="Select a service" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="support">Customer Support Bot</SelectItem>
-                        <SelectItem value="sales">Sales & Lead Capture Bot</SelectItem>
-                        <SelectItem value="appointment">Appointment & Service Bot</SelectItem>
-                        <SelectItem value="voice">Voice & Custom AI Agents</SelectItem>
-                        <SelectItem value="custom">Custom Solution</SelectItem>
-                        <SelectItem value="not-sure">Not Sure Yet</SelectItem>
+                        <SelectItem value="Customer Support Bot">Customer Support Bot</SelectItem>
+                        <SelectItem value="Sales & Lead Capture Bot">Sales & Lead Capture Bot</SelectItem>
+                        <SelectItem value="Appointment & Service Bot">Appointment & Service Bot</SelectItem>
+                        <SelectItem value="Voice & Custom AI Agents">Voice & Custom AI Agents</SelectItem>
+                        <SelectItem value="Custom Solution">Custom Solution</SelectItem>
+                        <SelectItem value="Not Sure Yet">Not Sure Yet</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -149,9 +206,21 @@ const Contact = () => {
                     />
                   </div>
 
-                  <Button type="submit" variant="hero" size="lg" className="w-full">
-                    <Send size={20} className="mr-2" />
-                    Send Message
+                  <Button
+                    type="submit"
+                    variant="hero"
+                    size="lg"
+                    className="w-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      "Sending..."
+                    ) : (
+                      <>
+                        <Send size={20} className="mr-2" />
+                        Send Message
+                      </>
+                    )}
                   </Button>
                 </form>
               </div>
@@ -198,7 +267,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
-                    <p className="text-muted-foreground">hello@onthego.ai</p>
+                    <p className="text-muted-foreground">info@brandingonthego.com</p>
                     <p className="text-sm text-muted-foreground">We reply within 24 hours</p>
                   </div>
                 </div>
@@ -209,7 +278,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Phone</h3>
-                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                    <p className="text-muted-foreground">+1 (917) 523-1911</p>
                     <p className="text-sm text-muted-foreground">Mon-Fri, 9am-6pm EST</p>
                   </div>
                 </div>
