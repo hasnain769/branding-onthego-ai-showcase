@@ -2,7 +2,7 @@ import { Store, Scissors, Heart, Home, Monitor, Utensils, Briefcase, GraduationC
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
-import TemplatePreviewModal from "@/components/TemplatePreviewModal";
+import TemplatePreviewModal from "@/components/TempletePreviewModel";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
