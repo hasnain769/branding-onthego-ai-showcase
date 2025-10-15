@@ -11,8 +11,8 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">O</span>
+              <div className="w-auto h-8 p-1  gradient-primary rounded-sm flex items-center justify-center">
+                <span className="text-white font-bold text-lg">Branding</span>
               </div>
               <span className="font-bold text-xl">On the Go</span>
             </div>

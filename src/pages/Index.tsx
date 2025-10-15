@@ -121,7 +121,7 @@ const Index = () => {
               Never miss a question. Convert more customers. Book less follow-up.
             </h1>
             <p className="text-lg md:text-xl mb-10 text-white/90 animate-fade-in">
-              On the Go builds AI agents, voice assistants, and automations that answer FAQs, capture leads, 
+              Branding On the Go builds AI agents, voice assistants, and automations that answer FAQs, capture leads, 
               and schedule appointments — so your team can focus on what matters.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
@@ -300,6 +300,25 @@ const Index = () => {
               <Link to="/case-studies">
                 View All Case Studies <ArrowRight className="ml-2" size={20} />
               </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Partner Banner Section */}
+      <section className="py-16 bg-muted/50 border-y border-border">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+              💼 Partner With Us — Earn Income in the AI Industry
+            </h2>
+            <p className="text-lg text-muted-foreground mb-6">
+              Want to launch your own AI business without the tech headaches?<br />
+              Our Partner Program gives you a <strong>done-for-you system</strong> — your own AI voice agent, 
+              landing page, training, and commissions on every sale.
+            </p>
+            <Button variant="hero" size="lg" asChild>
+              <Link to="/Partners">Learn More</Link>
             </Button>
           </div>
         </div>
