@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, PhoneCall } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -47,40 +46,16 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const contactSchema = {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    "name": "Contact BrandingOnTheGo",
-    "description": "Get in touch with BrandingOnTheGo for AI chatbot and voice agent solutions. Free consultation available.",
-    "provider": {
-      "@type": "Organization",
-      "name": "BrandingOnTheGo",
-      "email": "hello@onthego.ai",
-      "telephone": "+1-555-123-4567",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "123 AI Avenue, Suite 100",
-        "addressLocality": "San Francisco",
-        "addressRegion": "CA",
-        "postalCode": "94102",
-        "addressCountry": "US"
-      }
-    }
+  const handleCallAI = () => {
+    window.location.href = "tel:+13632076443";
   };
 
   return (
     <div className="min-h-screen">
-      <SEO
-        title="Contact Us - Free AI Consultation"
-        description="Contact BrandingOnTheGo for AI chatbots, voice agents, and automation solutions. Free 30-minute strategy call. We reply within 24 hours."
-        keywords="contact AI agency, AI consultation, chatbot demo, voice agent inquiry, AI automation contact, free AI strategy call"
-        canonical="https://brandingonthego.vercel.app/contact"
-        structuredData={contactSchema}
-      />
       <Navigation />
 
       {/* Hero */}
-      <header className="pt-32 pb-20 gradient-primary" role="banner">
+      <section className="pt-32 pb-20 gradient-primary">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             Let's Start Automating Your Business
@@ -89,7 +64,7 @@ const Contact = () => {
             Book a free strategy call or send us a message. We'll help you find the perfect AI solution.
           </p>
         </div>
-      </header>
+      </section>
 
       {/* Contact Form & Info */}
       <section className="py-20 bg-background">
@@ -181,11 +156,28 @@ const Contact = () => {
                 </form>
               </div>
 
-              <div className="mt-8 p-6 bg-muted/30 rounded-xl border border-border">
-                <p className="text-sm text-muted-foreground">
-                  <strong>Prefer a live chat?</strong> Try our AI demo bot now to see how our 
-                  technology works in real-time.
-                </p>
+              <div className="mt-8 p-4 sm:p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
+                <div className="flex flex-col sm:flex-row items-start gap-4">
+                  <PhoneCall className="text-primary flex-shrink-0 mt-1" size={24} />
+                  <div className="flex-1 w-full">
+                    <p className="font-semibold mb-2 text-sm sm:text-base">
+                      Prefer to talk with our AI Agent?
+                    </p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-4">
+                      Call our AI assistant now to experience how our technology works in real-time. 
+                      Get instant answers to your questions 24/7.
+                    </p>
+                    <Button 
+                      onClick={handleCallAI}
+                      variant="outline"
+                      size="lg"
+                      className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm sm:text-base"
+                    >
+                      <PhoneCall size={18} className="mr-2 flex-shrink-0" />
+                      <span className="truncate">Call AI Agent: +1 (363) 207-6443</span>
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
 
