@@ -2,11 +2,12 @@ import { Store, Scissors, Heart, Home, Monitor, Utensils, Briefcase, GraduationC
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
-import TemplatePreviewModal from "@/components/TemplatePreviewModal";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const Templates = () => {
+  const [filter, setFilter] = useState("all");
+
   const templates = [
     {
       icon: Store,
@@ -72,16 +73,6 @@ const Templates = () => {
       features: ["Product finder", "Inventory check", "Store information", "Customer feedback"],
     },
   ];
-
-  const [filter, setFilter] = useState("all");
-  const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-
-  const handlePreview = (template: typeof templates[0]) => {
-    console.log("Opening preview for:", template.title);
-    setSelectedTemplate(template);
-    setIsPreviewOpen(true);
-  };
 
   const categories = [
     { id: "all", label: "All Templates" },
@@ -151,11 +142,7 @@ const Templates = () => {
                     </div>
                   ))}
                 </div>
-                <Button 
-                  variant="hero" 
-                  className="w-full"
-                  onClick={() => handlePreview(template)}
-                >
+                <Button variant="hero" className="w-full">
                   Preview Template
                 </Button>
               </div>
@@ -184,12 +171,6 @@ const Templates = () => {
       <CTASection
         title="Ready to launch your AI agent?"
         subtitle="Choose a template and go live in days, not months"
-      />
-
-      <TemplatePreviewModal
-        isOpen={isPreviewOpen}
-        onClose={() => setIsPreviewOpen(false)}
-        template={selectedTemplate}
       />
 
       <Footer />
