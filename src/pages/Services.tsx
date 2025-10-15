@@ -2,6 +2,7 @@ import { MessageSquare, ShoppingCart, Calendar, Mic, Zap, Clock, BarChart, Shiel
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 
 const Services = () => {
@@ -99,12 +100,54 @@ const Services = () => {
     },
   ];
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What AI services does BrandingOnTheGo offer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "BrandingOnTheGo offers customer support bots, sales & lead capture bots, appointment & service bots, and custom voice AI agents powered by advanced AI technology."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How quickly can I deploy an AI chatbot?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "With BrandingOnTheGo, you can launch your AI agent in days, not months. Our ready-to-deploy templates and expert support ensure rapid implementation."
+        }
+      }
+    ]
+  };
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "AI Chatbot & Automation Services",
+    "provider": {
+      "@type": "Organization",
+      "name": "BrandingOnTheGo"
+    },
+    "areaServed": "Global",
+    "description": "Comprehensive AI chatbot, voice agent, and automation solutions for businesses worldwide."
+  };
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="AI Services & Solutions"
+        description="Custom AI chatbots, voice agents, and automation systems. Customer support bots, sales capture, appointment scheduling, and voice AI that drive real results."
+        keywords="AI services, AI chatbots, voice agents, customer support bot, sales automation, appointment booking bot, AI automation services, conversational AI, business chatbot"
+        canonical="https://brandingonthego.vercel.app/services"
+        structuredData={[faqSchema, serviceSchema]}
+      />
       <Navigation />
 
       {/* Hero */}
-      <section className="pt-32 pb-20 gradient-primary">
+      <header className="pt-32 pb-20 gradient-primary" role="banner">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             AI Services That Drive Results
@@ -113,7 +156,7 @@ const Services = () => {
             Choose from our suite of AI-powered solutions designed to automate your business and delight your customers
           </p>
         </div>
-      </section>
+      </header>
 
       {/* Service Details */}
       {services.map((service, index) => (

@@ -2,6 +2,7 @@ import { TrendingUp, Clock, Users, DollarSign } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
+import SEO from "@/components/SEO";
 
 const CaseStudies = () => {
   const caseStudies = [
@@ -63,12 +64,30 @@ const CaseStudies = () => {
     },
   ];
 
+  const caseStudySchema = caseStudies.map(study => ({
+    "@context": "https://schema.org",
+    "@type": "Case Study",
+    "name": `${study.company} - ${study.industry} Success Story`,
+    "description": study.challenge,
+    "provider": {
+      "@type": "Organization",
+      "name": "BrandingOnTheGo"
+    }
+  }));
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="AI Success Stories & Case Studies"
+        description="Real results from businesses using BrandingOnTheGo AI chatbots and voice agents. See how salons, e-commerce stores, clinics, and real estate firms increased revenue with AI automation."
+        keywords="AI case studies, chatbot success stories, AI automation results, customer testimonials, AI implementation examples, business AI transformation, chatbot ROI"
+        canonical="https://brandingonthego.vercel.app/case-studies"
+        structuredData={caseStudySchema}
+      />
       <Navigation />
 
       {/* Hero */}
-      <section className="pt-32 pb-20 gradient-primary">
+      <header className="pt-32 pb-20 gradient-primary" role="banner">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             Real Results from Real Businesses
@@ -77,7 +96,7 @@ const CaseStudies = () => {
             See how businesses like yours are growing with AI automation
           </p>
         </div>
-      </section>
+      </header>
 
       {/* Case Studies */}
       <section className="py-20 bg-background">

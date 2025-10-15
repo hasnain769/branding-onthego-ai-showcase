@@ -2,6 +2,7 @@ import { Store, Scissors, Heart, Home, Monitor, Utensils, Briefcase, GraduationC
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -85,12 +86,34 @@ const Templates = () => {
     ? templates 
     : templates.filter(t => t.category === filter);
 
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": templates.map((template, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": template.title,
+        "description": template.description,
+        "applicationCategory": "BusinessApplication"
+      }
+    }))
+  };
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="AI Chatbot Templates for Every Industry"
+        description="Ready-to-deploy AI chatbot templates for retail, healthcare, real estate, salons, restaurants, and more. Launch your AI agent in days with industry-specific solutions."
+        keywords="AI chatbot templates, industry-specific chatbots, retail chatbot, healthcare bot, real estate AI, salon booking bot, restaurant reservation bot, ready-to-deploy AI"
+        canonical="https://brandingonthego.vercel.app/templates"
+        structuredData={itemListSchema}
+      />
       <Navigation />
 
       {/* Hero */}
-      <section className="pt-32 pb-20 gradient-primary">
+      <header className="pt-32 pb-20 gradient-primary" role="banner">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             Ready-to-Deploy AI Templates
@@ -99,7 +122,7 @@ const Templates = () => {
             Get started fast with industry-specific AI solutions built for your business
           </p>
         </div>
-      </section>
+      </header>
 
       {/* Filter Tabs */}
       <section className="py-12 bg-muted/30 border-b border-border">

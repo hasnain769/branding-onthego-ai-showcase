@@ -6,6 +6,7 @@ import ServiceCard from "@/components/ServiceCard";
 import TemplateCard from "@/components/TemplateCard";
 import MetricCard from "@/components/MetricCard";
 import CTASection from "@/components/CTASection";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -71,18 +72,48 @@ const Index = () => {
     { value: "+28%", label: "Increase in bookings" },
   ];
 
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "BrandingOnTheGo",
+    "url": "https://brandingonthego.vercel.app",
+    "logo": "https://brandingonthego.vercel.app/logo.png",
+    "description": "BrandingOnTheGo builds AI chatbots, voice agents, and generative automation systems for modern brands.",
+    "sameAs": [
+      "https://x.com/brandingonthego",
+      "https://www.linkedin.com/company/brandingonthego"
+    ]
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "BrandingOnTheGo",
+    "description": "BrandingOnTheGo is an AI agency that builds chatbots, voice agents, and automation systems using advanced AI technology.",
+    "keywords": ["AI chatbots", "voice agents", "AI automation", "agentic AI", "generative AI"]
+  };
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="BrandingOnTheGo | AI Chatbots, Voice Agents & Automation Experts"
+        description="BrandingOnTheGo builds intelligent AI chatbots, voice agents, and automation systems that help brands deliver personalized, human-like experiences."
+        keywords="AI agency, AI chatbots, voice agents, AI automation, generative AI, agentic AI, business automation, chatbot development, conversational AI"
+        canonical="https://brandingonthego.vercel.app"
+        structuredData={[organizationSchema, websiteSchema]}
+      />
       <Navigation />
 
       {/* Hero Section */}
-      <section 
+      <header 
         className="relative pt-32 pb-20 overflow-hidden"
         style={{
           backgroundImage: `linear-gradient(135deg, rgba(46, 144, 255, 0.95), rgba(124, 58, 237, 0.95)), url(${heroBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
+        role="banner"
+        aria-label="Hero section"
       >
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center text-white">
@@ -103,13 +134,13 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </section>
+      </header>
 
       {/* Services Overview */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-background" aria-labelledby="services-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 id="services-heading" className="text-3xl md:text-4xl font-bold mb-4">
               AI Solutions That Work for You
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -125,10 +156,10 @@ const Index = () => {
       </section>
 
       {/* Templates Section */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-20 bg-muted/30" aria-labelledby="templates-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 id="templates-heading" className="text-3xl md:text-4xl font-bold mb-4">
               Built for every industry
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -149,10 +180,10 @@ const Index = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-background" aria-labelledby="how-it-works-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold mb-4">
               How It Works
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -178,10 +209,10 @@ const Index = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-20 bg-muted/30" aria-labelledby="testimonials-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 id="testimonials-heading" className="text-3xl md:text-4xl font-bold mb-4">
               Why Choose On the Go
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -214,10 +245,10 @@ const Index = () => {
       </section>
 
       {/* Case Studies Preview */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-background" aria-labelledby="case-studies-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 id="case-studies-heading" className="text-3xl md:text-4xl font-bold mb-4">
               Real results from real businesses
             </h2>
           </div>

@@ -2,6 +2,7 @@ import { Target, Users, Lightbulb, Award } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
+import SEO from "@/components/SEO";
 import teamPhoto from "@/assets/team-photo.jpg";
 
 const About = () => {
@@ -51,12 +52,34 @@ const About = () => {
     },
   ];
 
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About BrandingOnTheGo",
+    "description": "Learn about BrandingOnTheGo, a leading AI agency building chatbots, voice agents, and automation systems for businesses worldwide.",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "BrandingOnTheGo",
+      "foundingDate": "2022",
+      "description": "AI agency specializing in chatbots, voice agents, and automation systems",
+      "numberOfEmployees": "50+",
+      "slogan": "We're humans building AI for humans"
+    }
+  };
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="About Us - AI Agency Building Intelligent Solutions"
+        description="BrandingOnTheGo is an AI agency that builds chatbots, voice agents, and automation systems. Founded in 2022, we serve 500+ clients with human-centered AI solutions."
+        keywords="about AI agency, AI company, chatbot development company, voice AI agency, AI automation experts, BrandingOnTheGo team, AI solutions provider"
+        canonical="https://brandingonthego.vercel.app/about"
+        structuredData={aboutSchema}
+      />
       <Navigation />
 
       {/* Hero */}
-      <section className="pt-32 pb-20 gradient-primary">
+      <header className="pt-32 pb-20 gradient-primary" role="banner">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             We're humans building AI for humans
@@ -65,7 +88,7 @@ const About = () => {
             On the Go was founded on the belief that AI should feel effortless and personal
           </p>
         </div>
-      </section>
+      </header>
 
       {/* Mission */}
       <section className="py-20 bg-background">
@@ -87,7 +110,7 @@ const About = () => {
           <div className="max-w-5xl mx-auto">
             <img
               src={teamPhoto}
-              alt="On the Go Team"
+              alt="BrandingOnTheGo team members collaborating on AI chatbot and voice agent development"
               className="w-full rounded-2xl shadow-2xl animate-fade-in"
             />
           </div>

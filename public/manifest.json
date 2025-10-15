@@ -1,0 +1,16 @@
+{
+  "name": "BrandingOnTheGo - AI Chatbots & Voice Agents",
+  "short_name": "BrandingOnTheGo",
+  "description": "Build intelligent AI chatbots, voice agents, and automation systems for your business",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2E90FF",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
