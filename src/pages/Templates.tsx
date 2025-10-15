@@ -2,13 +2,11 @@ import { Store, Scissors, Heart, Home, Monitor, Utensils, Briefcase, GraduationC
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
-import SEO from "@/components/SEO";
+import TemplatePreviewModal from "@/components/TemplatePreviewModal";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const Templates = () => {
-  const [filter, setFilter] = useState("all");
-
   const templates = [
     {
       icon: Store,
@@ -75,6 +73,16 @@ const Templates = () => {
     },
   ];
 
+  const [filter, setFilter] = useState("all");
+  const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  const handlePreview = (template: typeof templates[0]) => {
+    console.log("Opening preview for:", template.title);
+    setSelectedTemplate(template);
+    setIsPreviewOpen(true);
+  };
+
   const categories = [
     { id: "all", label: "All Templates" },
     { id: "sales", label: "Sales & Lead Gen" },
@@ -86,34 +94,12 @@ const Templates = () => {
     ? templates 
     : templates.filter(t => t.category === filter);
 
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": templates.map((template, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": template.title,
-        "description": template.description,
-        "applicationCategory": "BusinessApplication"
-      }
-    }))
-  };
-
   return (
     <div className="min-h-screen">
-      <SEO
-        title="AI Chatbot Templates for Every Industry"
-        description="Ready-to-deploy AI chatbot templates for retail, healthcare, real estate, salons, restaurants, and more. Launch your AI agent in days with industry-specific solutions."
-        keywords="AI chatbot templates, industry-specific chatbots, retail chatbot, healthcare bot, real estate AI, salon booking bot, restaurant reservation bot, ready-to-deploy AI"
-        canonical="https://brandingonthego.vercel.app/templates"
-        structuredData={itemListSchema}
-      />
       <Navigation />
 
       {/* Hero */}
-      <header className="pt-32 pb-20 gradient-primary" role="banner">
+      <section className="pt-32 pb-20 gradient-primary">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
             Ready-to-Deploy AI Templates
@@ -122,7 +108,7 @@ const Templates = () => {
             Get started fast with industry-specific AI solutions built for your business
           </p>
         </div>
-      </header>
+      </section>
 
       {/* Filter Tabs */}
       <section className="py-12 bg-muted/30 border-b border-border">
@@ -165,7 +151,11 @@ const Templates = () => {
                     </div>
                   ))}
                 </div>
-                <Button variant="hero" className="w-full">
+                <Button 
+                  variant="hero" 
+                  className="w-full"
+                  onClick={() => handlePreview(template)}
+                >
                   Preview Template
                 </Button>
               </div>
@@ -194,6 +184,12 @@ const Templates = () => {
       <CTASection
         title="Ready to launch your AI agent?"
         subtitle="Choose a template and go live in days, not months"
+      />
+
+      <TemplatePreviewModal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        template={selectedTemplate}
       />
 
       <Footer />
