@@ -16,11 +16,11 @@ const SEO = ({
   keywords, 
   canonical,
   ogType = "website",
-  ogImage = "https://brandingonthego.vercel.app/og-image.png",
+  ogImage = "https://brandingonthego.com/og-image.png",
   structuredData 
 }: SEOProps) => {
   const fullTitle = title.includes('BrandingOnTheGo') ? title : `${title} | BrandingOnTheGo`;
-  const url = canonical || (typeof window !== 'undefined' ? window.location.href : 'https://brandingonthego.vercel.app');
+  const url = canonical || (typeof window !== 'undefined' ? window.location.href : 'https://brandingonthego.com');
 
   return (
     <Helmet>

@@ -9,23 +9,23 @@ const About = () => {
   const values = [
     {
       icon: Users,
-      title: "Human-Centered AI",
-      description: "We build AI that enhances human capabilities, not replaces them. Our solutions empower your team to focus on what matters most.",
+      title: "Human-Like Voice AI",
+      description: "We build voice agents that sound natural and conversational. Our AI enhances your team's capabilities by handling routine calls so humans can focus on complex interactions.",
     },
     {
       icon: Target,
       title: "Results-Driven",
-      description: "We measure success by your results. Every solution is designed to deliver measurable improvements to your business.",
+      description: "We measure success by answered calls, booked appointments, and satisfied customers. Every voice agent is optimized for real business outcomes.",
     },
     {
       icon: Lightbulb,
-      title: "Innovation",
-      description: "We stay at the forefront of AI technology to bring you the most effective and efficient automation solutions.",
+      title: "Voice AI Innovation",
+      description: "We stay at the cutting edge of conversational AI and voice technology to deliver the most natural-sounding, intelligent phone automation.",
     },
     {
       icon: Award,
-      title: "Excellence",
-      description: "We're committed to delivering exceptional quality in every project, from initial consultation to ongoing support.",
+      title: "Voice Excellence",
+      description: "We're committed to delivering exceptional voice quality and conversation intelligence in every call, with continuous improvement and support.",
     },
   ];
 
@@ -56,24 +56,24 @@ const About = () => {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "About BrandingOnTheGo",
-    "description": "Learn about BrandingOnTheGo, a leading AI agency building chatbots, voice agents, and automation systems for businesses worldwide.",
+    "description": "Learn about BrandingOnTheGo, a leading voice AI agency building AI voice agents and conversational AI systems for businesses worldwide.",
     "mainEntity": {
       "@type": "Organization",
       "name": "BrandingOnTheGo",
       "foundingDate": "2022",
-      "description": "AI agency specializing in chatbots, voice agents, and automation systems",
+      "description": "Voice AI agency specializing in AI voice agents, conversational AI, and phone automation systems",
       "numberOfEmployees": "50+",
-      "slogan": "We're humans building AI for humans"
+      "slogan": "Human-like voice AI that never sleeps"
     }
   };
 
   return (
     <div className="min-h-screen">
       <SEO
-        title="About Us - AI Agency Building Intelligent Solutions"
-        description="BrandingOnTheGo is an AI agency that builds chatbots, voice agents, and automation systems. Founded in 2022, we serve 500+ clients with human-centered AI solutions."
-        keywords="about AI agency, AI company, chatbot development company, voice AI agency, AI automation experts, BrandingOnTheGo team, AI solutions provider"
-        canonical="https://brandingonthego.vercel.app/about"
+        title="About Us - AI Voice Agent Experts"
+        description="BrandingOnTheGo specializes in AI voice agents and conversational AI. Founded in 2022, we serve 500+ clients with human-like voice automation that handles phone calls 24/7."
+        keywords="about voice AI agency, AI voice company, voice agent development, conversational AI experts, voice automation specialists, AI phone agents, voice AI team"
+        canonical="https://brandingonthego.com/about"
         structuredData={aboutSchema}
       />
       <Navigation />
@@ -96,9 +96,9 @@ const About = () => {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-8">Our Mission</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-12">
-              At On the Go, we believe AI should feel effortless and personal. Our mission is to help businesses 
-              save time and create better customer experiences through intelligent automation. We're passionate 
-              about making advanced AI technology accessible, practical, and human-centered.
+              At On the Go, we believe voice AI should sound human and feel effortless. Our mission is to help businesses 
+              never miss another customer call through intelligent voice automation. We're passionate about making advanced 
+              conversational AI accessible, reliable, and indistinguishable from human conversation.
             </p>
           </div>
         </div>

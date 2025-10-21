@@ -44,4 +44,4 @@ User-agent: LinkedInBot
 Allow: /
 
 # Sitemap
-Sitemap: https://brandingonthego.vercel.app/sitemap.xml
+Sitemap: https://brandingonthego.com/sitemap.xml

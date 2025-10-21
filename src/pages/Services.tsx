@@ -1,4 +1,4 @@
-import { MessageSquare, ShoppingCart, Calendar, Mic, Zap, Clock, BarChart, Shield } from "lucide-react";
+import { PhoneCall, ShoppingCart, Calendar, Mic, Zap, Clock, BarChart, Shield } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
@@ -8,71 +8,71 @@ import { Button } from "@/components/ui/button";
 const Services = () => {
   const services = [
     {
-      id: "support",
-      icon: MessageSquare,
-      title: "Customer Support Bot",
-      tagline: "Never miss a question",
-      problem: "Customer inquiries pile up, leading to frustrated customers and lost sales opportunities.",
-      solution: "Our AI support bot provides instant, accurate answers to FAQs, policy questions, and product information 24/7.",
-      outcome: "Reduced response times by 90% and increased customer satisfaction scores.",
+      id: "voice",
+      icon: Mic,
+      title: "AI Voice Agents",
+      tagline: "Your 24/7 phone team",
+      problem: "Missing phone calls means losing customers. Staffing a phone line 24/7 is expensive and inconsistent.",
+      solution: "AI voice agents that sound human, understand context, and handle unlimited calls simultaneously with natural conversation.",
+      outcome: "Handle 100+ calls simultaneously with 95% customer satisfaction and zero missed opportunities.",
       features: [
-        "Instant FAQ responses",
-        "Product information lookup",
-        "Policy explanation",
+        "Human-like natural conversation",
+        "24/7 availability, no breaks",
+        "Instant call answering",
         "Multi-language support",
-        "Seamless handoff to human agents",
-        "Conversation analytics",
+        "Conversation intelligence & analytics",
+        "Seamless CRM integration",
       ],
     },
     {
-      id: "sales",
-      icon: ShoppingCart,
-      title: "Sales & Lead Capture Bot",
-      tagline: "Turn clicks into customers",
-      problem: "Website visitors leave without engaging, and valuable lead information is lost.",
-      solution: "Proactively engage visitors, qualify leads, capture contact information, and schedule sales calls automatically.",
-      outcome: "3x increase in lead capture rate and 40% more booked sales calls.",
+      id: "inbound",
+      icon: PhoneCall,
+      title: "Inbound Call Automation",
+      tagline: "Answer every call instantly",
+      problem: "Customers hang up when calls aren't answered immediately, leading to lost revenue and poor experience.",
+      solution: "AI voice agents answer every inbound call in under 2 seconds, route intelligently, or handle requests completely.",
+      outcome: "Zero missed calls, 90% reduction in hold times, and 3x increase in phone-driven conversions.",
       features: [
-        "Proactive engagement",
-        "Lead qualification",
-        "Contact capture",
-        "Calendar integration",
-        "CRM synchronization",
-        "Lead scoring",
+        "Instant call pickup (<2s)",
+        "Intelligent call routing",
+        "FAQ answering over phone",
+        "Call summaries & transcripts",
+        "After-hours coverage",
+        "Voicemail transcription",
       ],
     },
     {
       id: "appointment",
       icon: Calendar,
-      title: "Appointment & Service Bot",
-      tagline: "Simplify scheduling",
-      problem: "Phone tag and manual scheduling waste time and lead to booking errors.",
-      solution: "Automated booking, rescheduling, and confirmation system that syncs with your calendar.",
-      outcome: "35% increase in bookings and 80% reduction in no-shows.",
+      title: "Appointment Scheduling Voice Bots",
+      tagline: "Book appointments by voice",
+      problem: "Manual appointment booking over the phone is time-consuming and error-prone, leading to scheduling conflicts.",
+      solution: "Voice AI that handles booking, rescheduling, and confirmations via phone calls with natural conversation.",
+      outcome: "35% increase in bookings, 80% reduction in no-shows, and staff freed for higher-value work.",
       features: [
-        "24/7 booking availability",
-        "Automatic reminders",
-        "Easy rescheduling",
+        "Voice-based scheduling",
+        "Automated phone reminders",
+        "Easy rescheduling by phone",
         "Calendar sync",
-        "Payment integration",
+        "SMS & email confirmations",
         "Waitlist management",
       ],
     },
     {
-      id: "voice",
-      icon: Mic,
-      title: "Voice & Custom AI Agents",
-      tagline: "Let your business talk",
-      problem: "Phone calls require constant staffing and important details get missed.",
-      solution: "AI voice agents that handle calls naturally, take messages, and provide call summaries.",
-      outcome: "Handle 100+ calls simultaneously while maintaining quality.",
+      id: "sales",
+      icon: ShoppingCart,
+      title: "Sales Voice Agents",
+      tagline: "AI sales reps that never sleep",
+      problem: "Sales teams can't follow up with every lead fast enough, and phone prospecting is time-intensive.",
+      solution: "AI voice agents that call leads, qualify prospects, answer product questions, and book sales meetings.",
+      outcome: "3x faster lead response time, 40% more qualified meetings booked, and consistent sales conversations.",
       features: [
-        "Natural conversation",
-        "Call routing",
-        "Message taking",
-        "Conversation summaries",
-        "Multi-language support",
-        "Custom workflows",
+        "Outbound & inbound calling",
+        "Lead qualification by voice",
+        "Product Q&A over phone",
+        "Meeting scheduling",
+        "CRM auto-logging",
+        "Lead scoring & insights",
       ],
     },
   ];
@@ -138,10 +138,10 @@ const Services = () => {
   return (
     <div className="min-h-screen">
       <SEO
-        title="AI Services & Solutions"
-        description="Custom AI chatbots, voice agents, and automation systems. Customer support bots, sales capture, appointment scheduling, and voice AI that drive real results."
-        keywords="AI services, AI chatbots, voice agents, customer support bot, sales automation, appointment booking bot, AI automation services, conversational AI, business chatbot"
-        canonical="https://brandingonthego.vercel.app/services"
+        title="AI Voice Agent Services & Solutions"
+        description="AI voice agents that handle phone calls 24/7. Inbound call automation, appointment scheduling, sales calls, and voice AI solutions that drive results."
+        keywords="AI voice services, voice AI agents, AI phone answering, inbound call automation, voice automation services, AI calling agents, phone AI, conversational voice AI"
+        canonical="https://brandingonthego.com/services"
         structuredData={[faqSchema, serviceSchema]}
       />
       <Navigation />
@@ -150,10 +150,10 @@ const Services = () => {
       <header className="pt-32 pb-20 gradient-primary" role="banner">
         <div className="container mx-auto px-4 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
-            AI Services That Drive Results
+            AI Voice Agent Services That Transform Your Phone Line
           </h1>
           <p className="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-white/90 animate-fade-in">
-            Choose from our suite of AI-powered solutions designed to automate your business and delight your customers
+            Human-like voice AI that handles calls, answers questions, and drives conversions 24/7
           </p>
         </div>
       </header>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MessageSquare, ShoppingCart, Calendar, Mic, Store, Scissors, Heart, Home, Monitor, ArrowRight, CheckCircle2 } from "lucide-react";
+import { PhoneCall, ShoppingCart, Calendar, Mic, Store, Scissors, Heart, Home, Monitor, ArrowRight, CheckCircle2 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ServiceCard from "@/components/ServiceCard";
@@ -13,28 +13,28 @@ import heroBg from "@/assets/hero-bg.jpg";
 const Index = () => {
   const services = [
     {
-      icon: MessageSquare,
-      title: "Customer Support Bot",
-      description: "Never miss a question. Instantly answers FAQs, policies, and product info.",
-      link: "/services#support",
+      icon: Mic,
+      title: "AI Voice Agents",
+      description: "Human-like voice AI that handles calls, answers questions, and qualifies leads 24/7.",
+      link: "/services#voice",
     },
     {
-      icon: ShoppingCart,
-      title: "Sales & Lead Capture Bot",
-      description: "Turn clicks into customers. Captures contact info, qualifies leads, and books calls.",
-      link: "/services#sales",
+      icon: PhoneCall,
+      title: "Inbound Call Automation",
+      description: "Never miss a call. AI agents answer, route, and handle customer inquiries instantly.",
+      link: "/services#inbound",
     },
     {
       icon: Calendar,
-      title: "Appointment & Service Bot",
-      description: "Simplify scheduling. Books, reschedules, and confirms appointments.",
+      title: "Appointment Scheduling Voice Bots",
+      description: "Voice-powered scheduling that books, confirms, and reminds via phone calls.",
       link: "/services#appointment",
     },
     {
-      icon: Mic,
-      title: "Voice & Custom AI Agents",
-      description: "Talk, don't type. Handle calls, summarize conversations, and assist teams.",
-      link: "/services#voice",
+      icon: ShoppingCart,
+      title: "Sales Voice Agents",
+      description: "AI voice agents that qualify leads, answer questions, and close deals over the phone.",
+      link: "/services#sales",
     },
   ];
 
@@ -76,9 +76,9 @@ const Index = () => {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "BrandingOnTheGo",
-    "url": "https://brandingonthego.vercel.app",
-    "logo": "https://brandingonthego.vercel.app/logo.png",
-    "description": "BrandingOnTheGo builds AI chatbots, voice agents, and generative automation systems for modern brands.",
+    "url": "https://brandingonthego.com",
+    "logo": "https://brandingonthego.com/logo.png",
+    "description": "BrandingOnTheGo builds AI voice agents and conversational AI systems that handle phone calls, answer questions, and automate customer interactions 24/7.",
     "sameAs": [
       "https://x.com/brandingonthego",
       "https://www.linkedin.com/company/brandingonthego"
@@ -89,17 +89,17 @@ const Index = () => {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "BrandingOnTheGo",
-    "description": "BrandingOnTheGo is an AI agency that builds chatbots, voice agents, and automation systems using advanced AI technology.",
-    "keywords": ["AI chatbots", "voice agents", "AI automation", "agentic AI", "generative AI"]
+    "description": "BrandingOnTheGo specializes in AI voice agents, voice automation, and conversational AI technology for businesses.",
+    "keywords": ["AI voice agents", "voice AI", "conversational AI", "AI phone agents", "voice automation"]
   };
 
   return (
     <div className="min-h-screen">
       <SEO
-        title="BrandingOnTheGo | AI Chatbots, Voice Agents & Automation Experts"
-        description="BrandingOnTheGo builds intelligent AI chatbots, voice agents, and automation systems that help brands deliver personalized, human-like experiences."
-        keywords="AI agency, AI chatbots, voice agents, AI automation, generative AI, agentic AI, business automation, chatbot development, conversational AI"
-        canonical="https://brandingonthego.vercel.app"
+        title="BrandingOnTheGo | AI Voice Agents & Conversational AI Experts"
+        description="BrandingOnTheGo builds intelligent AI voice agents that handle phone calls, answer customer questions, qualify leads, and automate conversations 24/7."
+        keywords="AI voice agents, voice AI, conversational AI, AI phone agents, voice automation, AI calling agents, phone AI, voice assistants, inbound call automation"
+        canonical="https://brandingonthego.com"
         structuredData={[organizationSchema, websiteSchema]}
       />
       <Navigation />
@@ -118,11 +118,11 @@ const Index = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
-              Never miss a question. Convert more customers. Book less follow-up.
+              AI Voice Agents That Answer Every Call, Every Time
             </h1>
             <p className="text-lg md:text-xl mb-10 text-white/90 animate-fade-in">
-              Branding On the Go builds AI agents, voice assistants, and automations that answer FAQs, capture leads, 
-              and schedule appointments — so your team can focus on what matters.
+              Never miss a customer again. Our AI voice agents handle phone calls 24/7, answer questions, qualify leads, 
+              and book appointments — just like your best team member, but always available.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
               <Button variant="outline-white" size="xl" asChild>
@@ -141,10 +141,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 id="services-heading" className="text-3xl md:text-4xl font-bold mb-4">
-              AI Solutions That Work for You
+              Voice AI Solutions That Never Sleep
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose the perfect AI agent for your business needs
+              Human-like voice agents powered by advanced conversational AI
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
