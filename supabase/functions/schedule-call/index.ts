@@ -52,7 +52,7 @@ serve(async (req) => {
         agent: AWAZ_AGENT_ID,
         name,
         phone,
-        from: "661d7fb88bcadcf1d86fd8b0",
+        from: "+18599035211",
         datetime,
       }),
     });
