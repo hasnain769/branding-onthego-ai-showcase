@@ -147,3 +147,10 @@ All colors MUST be HSL.
     }
   }
 }
+
+@layer components {
+  vapi-widget {
+    margin: 0 auto;
+    display: block; /* Important for margin: auto to work for horizontal centering */
+  }
+}

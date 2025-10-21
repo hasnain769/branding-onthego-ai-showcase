@@ -4,8 +4,25 @@ import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react"; // Import useEffect
+import { useLocation } from "react-router-dom"; // Import useLocation
+import { Link } from "react-router-dom"; // Import Link
 
 const Services = () => {
+  const location = useLocation(); // Get current location
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        // Add a small delay to ensure the page has rendered and elements are in place
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100); 
+      }
+    }
+  }, [location]); // Re-run when location changes
+
   const services = [
     {
       id: "voice",
@@ -135,6 +152,10 @@ const Services = () => {
     "description": "Comprehensive AI chatbot, voice agent, and automation solutions for businesses worldwide."
   };
 
+  const getServiceCategoryForContactForm = (serviceTitle: string) => {
+    return serviceTitle;
+  };
+
   return (
     <div className="min-h-screen">
       <SEO
@@ -220,8 +241,10 @@ const Services = () => {
                     </div>
                   </div>
 
-                  <Button variant="hero" size="lg">
-                    Get Started with {service.title}
+                  <Button variant="hero" size="lg" asChild>
+                    <Link to="/contact" state={{ serviceCategory: getServiceCategoryForContactForm(service.title), serviceMessage: `I'm interested in your ${service.title} and would like to learn more about how it can help my business.` }}>
+                      Get Started with {service.title}
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -236,7 +259,7 @@ const Services = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Built for Performance
-            </h2>
+            </h2 >
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Every AI agent comes with these powerful capabilities
             </p>

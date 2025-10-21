@@ -40,7 +40,7 @@ const Contact = () => {
     email: "",
     phone: "",
     company: "",
-    service: "",
+    service: "Not Sure Yet",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -259,10 +259,10 @@ const Contact = () => {
                         <SelectValue placeholder="Select a service" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Customer Support Bot">Customer Support Bot</SelectItem>
-                        <SelectItem value="Sales & Lead Capture Bot">Sales & Lead Capture Bot</SelectItem>
-                        <SelectItem value="Appointment & Service Bot">Appointment & Service Bot</SelectItem>
-                        <SelectItem value="Voice & Custom AI Agents">Voice & Custom AI Agents</SelectItem>
+                        <SelectItem value="AI Voice Agents">AI Voice Agents</SelectItem>
+                        <SelectItem value="Inbound Call Automation">Inbound Call Automation</SelectItem>
+                        <SelectItem value="Appointment Scheduling Voice Bots">Appointment Scheduling Voice Bots</SelectItem>
+                        <SelectItem value="Sales Voice Agents">Sales Voice Agents</SelectItem>
                         <SelectItem value="Custom Solution">Custom Solution</SelectItem>
                         <SelectItem value="Not Sure Yet">Not Sure Yet</SelectItem>
                       </SelectContent>

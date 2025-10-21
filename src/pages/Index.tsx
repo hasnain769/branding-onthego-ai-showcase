@@ -129,7 +129,7 @@ const Index = () => {
                 <Link to="/contact">Book a Free Strategy Call</Link>
               </Button>
               <Button variant="outline-white" size="xl" asChild>
-                <Link to="/services">See Live Demo</Link>
+                <Link to="/templates?category=booking&template=restaurant-reservation-bot">See Live Demo</Link>
               </Button>
             </div>
           </div>

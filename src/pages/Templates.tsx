@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
 import TemplatePreviewModal from "@/components/TempletePreviewModel";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const Templates = () => {
   const templates = [
@@ -73,9 +74,28 @@ const Templates = () => {
     },
   ];
 
-  const [filter, setFilter] = useState("all");
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
+  const templateTitle = searchParams.get("template");
+
+  const [filter, setFilter] = useState(category || "all");
   const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  useEffect(() => {
+    if (category) {
+      setFilter(category);
+    }
+  }, [category]);
+
+  useEffect(() => {
+    if (templateTitle) {
+      const templateToPreview = templates.find(t => t.title.toLowerCase().replace(/ /g, '-') === templateTitle);
+      if (templateToPreview) {
+        handlePreview(templateToPreview);
+      }
+    }
+  }, [templateTitle]);
 
   const handlePreview = (template: typeof templates[0]) => {
     console.log("Opening preview for:", template.title);

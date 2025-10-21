@@ -1,0 +1,52 @@
+## Project: Branding On the Go
+
+**Description:**
+This project is a showcase website for "Branding On the Go," a company specializing in AI-powered communication solutions. The website details their services, which include AI voice agents for handling calls, automating inbound communication, scheduling appointments, and assisting in sales. They also provide pre-built templates for various industries like retail, salons, medical, real estate, and SaaS. The site features a partner program for those interested in starting their own AI business.
+
+**Core Technologies:**
+*   **Frontend Framework:** React with TypeScript
+*   **Build Tool:** Vite
+*   **Styling:** Tailwind CSS, with UI components from shadcn-ui
+*   **Routing:** React Router DOM
+*   **Data Fetching/State Management:** TanStack React Query
+*   **Backend as a Service (BaaS):** Supabase (includes a serverless function for scheduling calls)
+*   **Linting:** ESLint
+
+**Project Structure:**
+*   `src/pages`: Contains the main pages of the application (e.g., `Index.tsx`, `Services.tsx`).
+*   `src/components`: Houses reusable React components, including navigation, footer, and various cards.
+*   `src/components/ui`: Dedicated to shadcn-ui components.
+*   `src/assets`: Stores static assets like images.
+*   `supabase/`: Contains Supabase configuration (`config.toml`) and serverless functions.
+
+**Key Functionality & Features:**
+*   **Service Showcase:** Detailed descriptions of AI voice agent capabilities. 
+*   **Template Library:** Pre-built solutions for different industries.
+*   **Partner Program:** Information on how to partner with the company.
+*   **Call-to-Actions (CTAs):** Buttons and sections encouraging users to "Book a Demo," "Book a Free Strategy Call," or "Learn More."
+*   **SEO:** `react-helmet-async` is used for managing SEO-related head tags, and the main page includes structured data (JSON-LD) for organization and website schemas.
+*   **Live Demos:** The application includes live demos for some templates. For example, the "Restaurant Reservation Bot" has a Vapi widget for live voice demos.
+
+**Development Scripts:**
+*   `npm run dev`: Starts the Vite development server.  
+*   `npm run build`: Creates a production build of the application.
+*   `npm run lint`: Runs the ESLint linter to check for code quality.
+
+**Recent Changes (2025-10-22):**
+*   Updated the "See Live Demo" button on the homepage to link to the Templates page with a specific template pre-selected.
+    *   The button now links to `/templates?category=booking&template=restaurant-reservation-bot`.
+    *   The `Templates.tsx` component now handles these query parameters to filter the templates by category and automatically open the preview modal for the specified template.
+*   Integrated the Vapi AI widget for the "Restaurant Reservation Bot" template preview.
+    *   The `TemplatePreviewModal` component now dynamically loads the Vapi client SDK script when the modal for the "Restaurant Reservation Bot" is opened. This ensures the widget is displayed correctly.
+    *   The `vapi-widget` is now centered using `margin: 0 auto; display: block;` in `index.css`.
+    *   The fixed height constraint has been removed from the widget's container in `TemplatePreviewModal.tsx` to allow it to expand downwards.
+    *   The `@vapi-ai/web` SDK has been installed and is used to programmatically start the Vapi call when the modal opens, making the widget open by default.
+    *   The `<vapi-widget>` custom element has been re-added to the JSX in `TemplatePreviewModal.tsx` to ensure the widget is rendered. The `widget: { position: 'center' }` configuration was removed from `vapi.start()` as it was an assumption and not confirmed to be a valid option.
+*   Modified `src/components/ServiceCard.tsx` so that the entire service card is clickable and navigates to the specified `link` prop.
+*   Added a `useEffect` hook to `src/pages/Services.tsx` to manually scroll to hash fragments, ensuring correct navigation to specific service sections on the page.
+*   Implemented pre-filling of the contact form on `src/pages/Contact.tsx` when navigating from the `Services` page.
+    *   The `SelectItem` options in `src/pages/Contact.tsx` have been updated to directly match the service titles from `src/pages/Services.tsx`.
+    *   The `getServiceCategoryForContactForm` function in `src/pages/Services.tsx` has been simplified to directly return the `serviceTitle`, as the `SelectItem` values now match.
+    *   The `Link` component on the "Get Started" buttons now passes the service title and a pre-written message to the `Contact` page's state.
+    *   `src/pages/Contact.tsx` now uses `useLocation` and a `useEffect` to read this state and pre-fill the `service` and `message` fields in the form.
+    *   The initial state for `formData.service` in `Contact.tsx` has been changed to "Not Sure Yet" to ensure the `Select` component starts with a valid `SelectItem` value.

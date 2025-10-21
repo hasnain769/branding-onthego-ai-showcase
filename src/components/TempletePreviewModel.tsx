@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,6 +7,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Phone, MessageSquare, Clock, Sparkles } from "lucide-react";
+import Vapi from '@vapi-ai/web'; // Import Vapi
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'vapi-widget': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        'assistant-id'?: string;
+        'public-key'?: string;
+      };
+    }
+  }
+}
 
 interface TemplatePreviewModalProps {
   isOpen: boolean;
@@ -21,36 +33,46 @@ interface TemplatePreviewModalProps {
 const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModalProps) => {
   const shouldShowVapiWidget = template?.title === "Restaurant Reservation Bot";
   const shouldShowFastbotsWidget = template?.title === "Salon & Spa Booking Bot";
-  const vapiIframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    if (isOpen && shouldShowVapiWidget && vapiIframeRef.current) {
-      // Inject Vapi widget into iframe for Restaurant Reservation Bot
-      const iframeDoc = vapiIframeRef.current.contentDocument;
-      if (iframeDoc) {
-        iframeDoc.open();
-        iframeDoc.write(`
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <style>
-                body { margin: 0; padding: 0; overflow: hidden; }
-              </style>
-            </head>
-            <body>
-              <vapi-widget 
-                assistant-id="c72f770b-2c30-4021-a81e-6a4f85f176e9" 
-                public-key="992bd5fb-c74c-4955-9371-4ae0b3aec062">
-              </vapi-widget>
-              <script
-                src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js"
-                async
-                type="text/javascript">
-              </script>
-            </body>
-          </html>
-        `);
-        iframeDoc.close();
+    if (isOpen && shouldShowVapiWidget) {
+      // Dynamically load the Vapi widget script
+      const scriptId = 'vapi-widget-script';
+      let script = document.getElementById(scriptId) as HTMLScriptElement;
+
+      if (!script) {
+        script = document.createElement('script');
+        script.id = scriptId;
+        script.src = "https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js";
+        script.async = true;
+        document.body.appendChild(script);
+      }
+
+      const initializeVapi = () => {
+        const vapi = new Vapi("992bd5fb-c74c-4955-9371-4ae0b3aec062"); // Public Key
+        vapi.start("c72f770b-2c30-4021-a81e-6a4f85f176e9"); // Assistant ID
+      };
+
+      // If script is already loaded, initialize Vapi immediately
+      if (script.dataset.loaded) {
+        initializeVapi();
+      } else {
+        // Otherwise, wait for the script to load
+        script.onload = () => {
+          script.dataset.loaded = 'true'; // Mark script as loaded
+          initializeVapi();
+        };
+      }
+
+      return () => {
+        // Cleanup: stop Vapi call and remove script
+        const vapi = new Vapi("992bd5fb-c74c-4955-9371-4ae0b3aec062"); // Public Key
+        vapi.stop();
+        
+        const existingScript = document.getElementById(scriptId);
+        if (existingScript) {
+          document.body.removeChild(existingScript);
+        }
       }
     }
   }, [isOpen, shouldShowVapiWidget]);
@@ -173,12 +195,11 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
           {shouldShowVapiWidget && (
             <div className="space-y-3">
               <h3 className="font-semibold text-lg">Live Voice Demo:</h3>
-              <div className="flex justify-center">
-                <iframe
-                  ref={vapiIframeRef}
-                  style={{ width: "100%", height: "100px", border: "none" }}
-                  title="Vapi Voice Widget"
-                />
+              <div className="relative">
+                <vapi-widget 
+                  assistant-id="c72f770b-2c30-4021-a81e-6a4f85f176e9" 
+                  public-key="992bd5fb-c74c-4955-9371-4ae0b3aec062">
+                </vapi-widget>
               </div>
             </div>
           )}
