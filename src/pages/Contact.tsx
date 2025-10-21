@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Mail, Phone, MapPin, Send, PhoneCall } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Mail, Phone, MapPin, Send, PhoneCall, ChevronDown } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { supabase } from "@/integrations/supabase/client";
 
 const GOOGLE_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSdi1qPJF9-nvmFTuFcfEtQc3OslW54WuzDj4EQjXZTTzrqfEw/formResponse";
@@ -38,6 +44,42 @@ const Contact = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Call Me Now states
+  const [callFormOpen, setCallFormOpen] = useState(false);
+  const [callPhone, setCallPhone] = useState("");
+  const [callName, setCallName] = useState("");
+  const [isSchedulingCall, setIsSchedulingCall] = useState(false);
+  const [callCooldown, setCallCooldown] = useState(0);
+
+  // Check session storage for cooldown on mount
+  useEffect(() => {
+    const cooldownEnd = sessionStorage.getItem('call_cooldown_end');
+    if (cooldownEnd) {
+      const timeLeft = Math.floor((parseInt(cooldownEnd) - Date.now()) / 1000);
+      if (timeLeft > 0) {
+        setCallCooldown(timeLeft);
+      } else {
+        sessionStorage.removeItem('call_cooldown_end');
+      }
+    }
+  }, []);
+
+  // Cooldown timer
+  useEffect(() => {
+    if (callCooldown > 0) {
+      const timer = setInterval(() => {
+        setCallCooldown((prev) => {
+          if (prev <= 1) {
+            sessionStorage.removeItem('call_cooldown_end');
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [callCooldown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,8 +131,41 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleCallAI = () => {
-    window.location.href = "tel:+13632076443";
+  const handleScheduleCall = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSchedulingCall(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('schedule-call', {
+        body: { name: callName, phone: callPhone }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Call Scheduled!",
+        description: "We'll call you within 5 minutes.",
+      });
+
+      // Set cooldown for 5 minutes
+      const cooldownEnd = Date.now() + 5 * 60 * 1000;
+      sessionStorage.setItem('call_cooldown_end', cooldownEnd.toString());
+      setCallCooldown(300); // 5 minutes in seconds
+
+      // Reset form
+      setCallName("");
+      setCallPhone("");
+      setCallFormOpen(false);
+    } catch (error) {
+      console.error('Error scheduling call:', error);
+      toast({
+        title: "Error",
+        description: "Failed to schedule call. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSchedulingCall(false);
+    }
   };
 
   return (
@@ -226,27 +301,76 @@ const Contact = () => {
               </div>
 
               <div className="mt-8 p-4 sm:p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl border border-primary/20">
-                <div className="flex flex-col sm:flex-row items-start gap-4">
-                  <PhoneCall className="text-primary flex-shrink-0 mt-1" size={24} />
-                  <div className="flex-1 w-full">
-                    <p className="font-semibold mb-2 text-sm sm:text-base">
-                      Prefer to talk with our AI Agent?
-                    </p>
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-4">
-                      Call our AI assistant now to experience how our technology works in real-time. 
-                      Get instant answers to your questions 24/7.
-                    </p>
-                    <Button 
-                      onClick={handleCallAI}
-                      variant="outline"
-                      size="lg"
-                      className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm sm:text-base"
-                    >
-                      <PhoneCall size={18} className="mr-2 flex-shrink-0" />
-                      <span className="truncate">Call AI Agent: +1 (363) 207-6443</span>
-                    </Button>
+                <Collapsible open={callFormOpen} onOpenChange={setCallFormOpen}>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <PhoneCall className="text-primary flex-shrink-0" size={24} />
+                      <p className="font-semibold text-sm sm:text-base">
+                        Get a Call from Our AI Agent
+                      </p>
+                    </div>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" size="sm" disabled={callCooldown > 0}>
+                        <ChevronDown className={`h-4 w-4 transition-transform ${callFormOpen ? 'rotate-180' : ''}`} />
+                      </Button>
+                    </CollapsibleTrigger>
                   </div>
-                </div>
+
+                  {callCooldown > 0 && (
+                    <div className="mt-4 p-3 bg-primary/10 rounded-lg text-center">
+                      <p className="text-sm font-medium">
+                        We'll call you within {Math.floor(callCooldown / 60)}:{(callCooldown % 60).toString().padStart(2, '0')} minutes
+                      </p>
+                    </div>
+                  )}
+
+                  <CollapsibleContent className="mt-4">
+                    <form onSubmit={handleScheduleCall} className="space-y-4">
+                      <div>
+                        <Label htmlFor="call-name">Your Name *</Label>
+                        <Input
+                          id="call-name"
+                          value={callName}
+                          onChange={(e) => setCallName(e.target.value)}
+                          required
+                          placeholder="Enter your name"
+                          className="mt-2"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="call-phone">Phone Number *</Label>
+                        <Input
+                          id="call-phone"
+                          type="tel"
+                          value={callPhone}
+                          onChange={(e) => setCallPhone(e.target.value)}
+                          required
+                          placeholder="+1 (555) 123-4567"
+                          className="mt-2"
+                        />
+                      </div>
+                      <Button
+                        type="submit"
+                        variant="outline"
+                        size="lg"
+                        className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+                        disabled={isSchedulingCall || callCooldown > 0}
+                      >
+                        {isSchedulingCall ? (
+                          "Scheduling..."
+                        ) : (
+                          <>
+                            <PhoneCall size={18} className="mr-2" />
+                            Call Me Now
+                          </>
+                        )}
+                      </Button>
+                      <p className="text-xs text-muted-foreground text-center">
+                        We'll call you within 2 minutes to discuss your needs
+                      </p>
+                    </form>
+                  </CollapsibleContent>
+                </Collapsible>
               </div>
             </div>
 

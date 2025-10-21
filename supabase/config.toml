@@ -1,0 +1,4 @@
+project_id = "gneanaaeneplaifkrokq"
+
+[functions.schedule-call]
+verify_jwt = false
