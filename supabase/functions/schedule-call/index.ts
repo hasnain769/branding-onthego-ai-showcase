@@ -24,8 +24,10 @@ serve(async (req) => {
     }
 
     const AWAZ_API_KEY = Deno.env.get('AWAZ_API_KEY');
-    if (!AWAZ_API_KEY) {
-      console.error('AWAZ_API_KEY not configured');
+    const AWAZ_AGENT_ID = Deno.env.get('AWAZ_AGENT_ID');
+    
+    if (!AWAZ_API_KEY || !AWAZ_AGENT_ID) {
+      console.error('AWAZ_API_KEY or AWAZ_AGENT_ID not configured');
       return new Response(
         JSON.stringify({ error: 'API configuration error' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -47,7 +49,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        agent: "65ff9abe3fdcbe533d3be143",
+        agent: AWAZ_AGENT_ID,
         name,
         phone,
         from: "661d7fb88bcadcf1d86fd8b0",
