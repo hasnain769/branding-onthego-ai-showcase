@@ -32,25 +32,37 @@ interface TemplatePreviewModalProps {
 }
 
 // ChatKit Component
+// ChatKit Component
 function ChatKitWidget() {
   const { control } = useChatKit({
     api: {
       async getClientSecret(existing) {
-        // If there's an existing session that needs refresh
         if (existing) {
           console.log('ChatKit: Refreshing existing session');
         }
 
         console.log('ChatKit: Fetching client secret...');
+
+        // 1. Generate or retrieve a persistent user ID
+        let userId = localStorage.getItem('chatkit_user_id');
+        if (!userId) {
+          userId = `user_${Math.random().toString(36).substring(2, 15)}`;
+          localStorage.setItem('chatkit_user_id', userId);
+        }
+        console.log('ChatKit: Using user ID:', userId);
         
         const res = await fetch('/api/chatkit/session', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+          // 2. Send the user ID in the request body
+          body: JSON.stringify({ userId: userId }),
         });
 
         if (!res.ok) {
+          const errorData = await res.json();
+          console.error('Error from /api/chatkit/session:', errorData);
           throw new Error(`Failed to get client secret: ${res.status}`);
         }
 
