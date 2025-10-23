@@ -1,0 +1,11 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/case-studies/page": "/case-studies",
+  "/contact/page": "/contact",
+  "/page": "/",
+  "/partners/page": "/partners",
+  "/services/page": "/services",
+  "/templates/page": "/templates"
+}
