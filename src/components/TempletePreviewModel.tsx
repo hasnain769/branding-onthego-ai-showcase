@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -38,6 +38,10 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
   const isVoiceBot = template?.title === "Restaurant Reservation Bot" || template?.title === "Professional Services Bot";
   const shouldShowVapiWidget = template?.title === "Restaurant Reservation Bot" || false;
   const shouldShowChatKit = template?.title === "Retail & E-commerce Bot";
+  
+  const chatKitRef = useRef<HTMLElement>(null);
+  const [chatKitError, setChatKitError] = useState<string | null>(null);
+  const [chatKitLoading, setChatKitLoading] = useState(false);
 
   // Vapi Widget Effect
   useEffect(() => {
@@ -81,70 +85,127 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
 
   // ChatKit Widget Effect
   useEffect(() => {
-    if (isOpen && shouldShowChatKit) {
-      const scriptId = 'chatkit-script';
-      let script = document.getElementById(scriptId) as HTMLScriptElement;
+    if (!isOpen || !shouldShowChatKit) {
+      return;
+    }
 
-      if (!script) {
-        script = document.createElement('script');
-        script.id = scriptId;
-        script.src = "https://cdn.platform.openai.com/deployments/chatkit/chatkit.js";
-        script.async = true;
-        document.body.appendChild(script);
-      }
+    console.log('ChatKit: Starting initialization...');
+    setChatKitLoading(true);
+    setChatKitError(null);
 
-      const initializeChatKit = async () => {
-        try {
-          // Fetch session from your API
-          const response = await fetch('/api/create-session', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
+    const scriptId = 'chatkit-script';
+    let script = document.getElementById(scriptId) as HTMLScriptElement;
+    let isCleanedUp = false;
 
-          if (!response.ok) {
-            console.error('Failed to create ChatKit session');
-            return;
-          }
+    const initializeChatKit = async () => {
+      if (isCleanedUp) return;
+      
+      try {
+        console.log('ChatKit: Fetching session...');
+        
+        // Fetch session from your API
+        const response = await fetch('/api/create-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-          const { client_secret } = await response.json();
+        if (!response.ok) {
+          throw new Error(`Failed to create session: ${response.status} ${response.statusText}`);
+        }
 
-          // Initialize ChatKit widget
-          const chatKitElement = document.querySelector('openai-chatkit') as any;
-          if (chatKitElement && client_secret) {
-            chatKitElement.clientSecret = client_secret;
+        const data = await response.json();
+        console.log('ChatKit: Session created successfully');
 
-            // Optional: Add event listeners
+        if (isCleanedUp) return;
+
+        // Wait for the element to be available
+        const maxAttempts = 20;
+        let attempts = 0;
+        
+        const waitForElement = () => {
+          if (isCleanedUp) return;
+          
+          const chatKitElement = chatKitRef.current as any;
+          
+          if (chatKitElement && data.client_secret) {
+            console.log('ChatKit: Setting client secret...');
+            chatKitElement.clientSecret = data.client_secret;
+
+            // Add event listeners
             chatKitElement.addEventListener('chatkit.message', (event: CustomEvent) => {
-              console.log('Message sent:', event.detail);
+              console.log('ChatKit message:', event.detail);
             });
 
             chatKitElement.addEventListener('chatkit.error', (event: CustomEvent) => {
               console.error('ChatKit error:', event.detail);
+              setChatKitError('Chat widget error occurred');
             });
+
+            chatKitElement.addEventListener('chatkit.ready', () => {
+              console.log('ChatKit: Widget ready!');
+              setChatKitLoading(false);
+            });
+
+            console.log('ChatKit: Initialized successfully');
+            setChatKitLoading(false);
+          } else if (attempts < maxAttempts) {
+            attempts++;
+            setTimeout(waitForElement, 100);
+          } else {
+            console.error('ChatKit: Element not found after max attempts');
+            setChatKitError('Failed to initialize chat widget');
+            setChatKitLoading(false);
           }
-        } catch (error) {
-          console.error('Failed to initialize ChatKit:', error);
-        }
-      };
-
-      if (script.dataset.loaded) {
-        initializeChatKit();
-      } else {
-        script.onload = () => {
-          script.dataset.loaded = 'true';
-          initializeChatKit();
         };
-      }
 
-      return () => {
-        const existingScript = document.getElementById(scriptId);
-        if (existingScript) {
-          document.body.removeChild(existingScript);
-        }
+        waitForElement();
+      } catch (error) {
+        console.error('ChatKit: Initialization error:', error);
+        setChatKitError(error instanceof Error ? error.message : 'Failed to initialize chat widget');
+        setChatKitLoading(false);
+      }
+    };
+
+    // Load or use existing script
+    if (!script) {
+      console.log('ChatKit: Loading script...');
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.src = "https://cdn.platform.openai.com/deployments/chatkit/chatkit.js";
+      script.async = true;
+      
+      script.onerror = () => {
+        console.error('ChatKit: Failed to load script');
+        setChatKitError('Failed to load chat widget script');
+        setChatKitLoading(false);
       };
+      
+      script.onload = () => {
+        console.log('ChatKit: Script loaded');
+        script.dataset.loaded = 'true';
+        // Give the custom element time to register
+        setTimeout(() => initializeChatKit(), 100);
+      };
+      
+      document.head.appendChild(script);
+    } else if (script.dataset.loaded === 'true') {
+      console.log('ChatKit: Using cached script');
+      // Script already loaded
+      setTimeout(() => initializeChatKit(), 100);
+    } else {
+      // Script is loading
+      console.log('ChatKit: Waiting for script to load...');
+      script.addEventListener('load', () => {
+        setTimeout(() => initializeChatKit(), 100);
+      });
     }
+
+    return () => {
+      isCleanedUp = true;
+      console.log('ChatKit: Cleaning up...');
+    };
   }, [isOpen, shouldShowChatKit]);
 
   if (!template) return null;
@@ -287,16 +348,33 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
                 </vapi-widget>
               </div>
             ) : shouldShowChatKit ? (
-              <div className="relative min-h-[600px] flex items-center justify-center">
-                <openai-chatkit 
-                  workflow-id={process.env.NEXT_PUBLIC_CHATKIT_WORKFLOW_ID || ""}
-                  style={{
-                    width: '100%',
-                    height: '600px',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: '0.5rem',
-                  }}
-                />
+              <div className="relative min-h-[600px] flex items-center justify-center border border-border rounded-lg bg-muted/20">
+                {chatKitError ? (
+                  <div className="text-center p-6">
+                    <p className="text-destructive font-semibold mb-2">Error Loading Chat Widget</p>
+                    <p className="text-sm text-muted-foreground mb-4">{chatKitError}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Check console for details. Make sure:
+                      <br />• API endpoint exists at /api/create-session
+                      <br />• Environment variables are configured
+                      <br />• OpenAI API key is valid
+                    </p>
+                  </div>
+                ) : chatKitLoading ? (
+                  <div className="text-center p-6">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p className="text-sm text-muted-foreground">Loading chat widget...</p>
+                  </div>
+                ) : (
+                  <openai-chatkit 
+                    ref={chatKitRef as any}
+                    workflow-id={process.env.NEXT_PUBLIC_CHATKIT_WORKFLOW_ID || ""}
+                    style={{
+                      width: '100%',
+                      height: '600px',
+                    }}
+                  />
+                )}
               </div>
             ) : (
               <div className="flex justify-center">
