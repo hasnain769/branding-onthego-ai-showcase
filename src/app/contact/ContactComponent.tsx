@@ -20,7 +20,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { supabase } from "@/integrations/supabase/client";
+
 
 const GOOGLE_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSdi1qPJF9-nvmFTuFcfEtQc3OslW54WuzDj4EQjXZTTzrqfEw/formResponse";
@@ -150,11 +150,17 @@ const ContactComponent = () => {
     setIsSchedulingCall(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('schedule-call', {
-        body: { name: callName, phone: callPhone }
+      const response = await fetch('/api/schedule-call', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: callName, phone: callPhone }),
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error('Failed to schedule call');
+      }
 
       toast({
         title: "Call Scheduled!",
