@@ -5,19 +5,17 @@ This project is a showcase website for "Branding On the Go," a company specializ
 
 **Core Technologies:**
 *   **Frontend Framework:** React with TypeScript
-*   **Build Tool:** Vite
+*   **Build Tool:** Nextjs
 *   **Styling:** Tailwind CSS, with UI components from shadcn-ui
 *   **Routing:** React Router DOM
 *   **Data Fetching/State Management:** TanStack React Query
-*   **Backend as a Service (BaaS):** Supabase (includes a serverless function for scheduling calls)
-*   **Linting:** ESLint
+
 
 **Project Structure:**
 *   `src/pages`: Contains the main pages of the application (e.g., `Index.tsx`, `Services.tsx`).
 *   `src/components`: Houses reusable React components, including navigation, footer, and various cards.
 *   `src/components/ui`: Dedicated to shadcn-ui components.
 *   `src/assets`: Stores static assets like images.
-*   `supabase/`: Contains Supabase configuration (`config.toml`) and serverless functions.
 
 **Key Functionality & Features:**
 *   **Service Showcase:** Detailed descriptions of AI voice agent capabilities. 

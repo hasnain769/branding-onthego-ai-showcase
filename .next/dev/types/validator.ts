@@ -110,6 +110,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../src/app/api/create-session/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/create-session">> = Specific
+  const handler = {} as typeof import("../../../src/app/api/create-session/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../src/app/api/schedule-call/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/schedule-call">> = Specific

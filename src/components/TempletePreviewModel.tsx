@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Phone, MessageSquare, Clock, Sparkles } from "lucide-react";
-import Vapi from '@vapi-ai/web'; // Import Vapi
+import Vapi from '@vapi-ai/web';
 
 declare global {
   namespace JSX {
@@ -15,6 +15,10 @@ declare global {
       'vapi-widget': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
         'assistant-id'?: string;
         'public-key'?: string;
+      };
+      'openai-chatkit': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        'workflow-id'?: string;
+        'client-secret'?: string;
       };
     }
   }
@@ -32,11 +36,12 @@ interface TemplatePreviewModalProps {
 
 const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModalProps) => {
   const isVoiceBot = template?.title === "Restaurant Reservation Bot" || template?.title === "Professional Services Bot";
-  const shouldShowVapiWidget = isVoiceBot;
+  const shouldShowVapiWidget = template?.title === "Restaurant Reservation Bot" || false;
+  const shouldShowChatKit = template?.title === "Retail & E-commerce Bot";
 
+  // Vapi Widget Effect
   useEffect(() => {
     if (isOpen && shouldShowVapiWidget) {
-      // Dynamically load the Vapi widget script
       const scriptId = 'vapi-widget-script';
       let script = document.getElementById(scriptId) as HTMLScriptElement;
 
@@ -49,24 +54,21 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
       }
 
       const initializeVapi = () => {
-        const vapi = new Vapi("992bd5fb-c74c-4955-9371-4ae0b3aec062"); // Public Key
-        vapi.start("c72f770b-2c30-4021-a81e-6a4f85f176e9"); // Assistant ID
+        const vapi = new Vapi("992bd5fb-c74c-4955-9371-4ae0b3aec062");
+        vapi.start("c72f770b-2c30-4021-a81e-6a4f85f176e9");
       };
 
-      // If script is already loaded, initialize Vapi immediately
       if (script.dataset.loaded) {
         initializeVapi();
       } else {
-        // Otherwise, wait for the script to load
         script.onload = () => {
-          script.dataset.loaded = 'true'; // Mark script as loaded
+          script.dataset.loaded = 'true';
           initializeVapi();
         };
       }
 
       return () => {
-        // Cleanup: stop Vapi call and remove script
-        const vapi = new Vapi("992bd5fb-c74c-4955-9371-4ae0b3aec062"); // Public Key
+        const vapi = new Vapi("992bd5fb-c74c-4955-9371-4ae0b3aec062");
         vapi.stop();
         
         const existingScript = document.getElementById(scriptId);
@@ -76,6 +78,74 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
       }
     }
   }, [isOpen, shouldShowVapiWidget]);
+
+  // ChatKit Widget Effect
+  useEffect(() => {
+    if (isOpen && shouldShowChatKit) {
+      const scriptId = 'chatkit-script';
+      let script = document.getElementById(scriptId) as HTMLScriptElement;
+
+      if (!script) {
+        script = document.createElement('script');
+        script.id = scriptId;
+        script.src = "https://cdn.platform.openai.com/deployments/chatkit/chatkit.js";
+        script.async = true;
+        document.body.appendChild(script);
+      }
+
+      const initializeChatKit = async () => {
+        try {
+          // Fetch session from your API
+          const response = await fetch('/api/create-session', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            console.error('Failed to create ChatKit session');
+            return;
+          }
+
+          const { client_secret } = await response.json();
+
+          // Initialize ChatKit widget
+          const chatKitElement = document.querySelector('openai-chatkit') as any;
+          if (chatKitElement && client_secret) {
+            chatKitElement.clientSecret = client_secret;
+
+            // Optional: Add event listeners
+            chatKitElement.addEventListener('chatkit.message', (event: CustomEvent) => {
+              console.log('Message sent:', event.detail);
+            });
+
+            chatKitElement.addEventListener('chatkit.error', (event: CustomEvent) => {
+              console.error('ChatKit error:', event.detail);
+            });
+          }
+        } catch (error) {
+          console.error('Failed to initialize ChatKit:', error);
+        }
+      };
+
+      if (script.dataset.loaded) {
+        initializeChatKit();
+      } else {
+        script.onload = () => {
+          script.dataset.loaded = 'true';
+          initializeChatKit();
+        };
+      }
+
+      return () => {
+        const existingScript = document.getElementById(scriptId);
+        if (existingScript) {
+          document.body.removeChild(existingScript);
+        }
+      };
+    }
+  }, [isOpen, shouldShowChatKit]);
 
   if (!template) return null;
 
@@ -216,9 +286,20 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
                   public-key="992bd5fb-c74c-4955-9371-4ae0b3aec062">
                 </vapi-widget>
               </div>
+            ) : shouldShowChatKit ? (
+              <div className="relative min-h-[600px] flex items-center justify-center">
+                <openai-chatkit 
+                  workflow-id={process.env.NEXT_PUBLIC_CHATKIT_WORKFLOW_ID || ""}
+                  style={{
+                    width: '100%',
+                    height: '600px',
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: '0.5rem',
+                  }}
+                />
+              </div>
             ) : (
               <div className="flex justify-center">
-                {/* Placeholder for a text-only chat widget */}
                 <div className="w-[400px] h-[600px] bg-muted/50 border border-border rounded-lg shadow-lg flex items-center justify-center">
                   <p className="text-muted-foreground">Text-only chat widget coming soon.</p>
                 </div>
