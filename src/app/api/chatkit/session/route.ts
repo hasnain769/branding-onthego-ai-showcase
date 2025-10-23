@@ -1,31 +1,45 @@
- // app/api/chatkit/session/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    // Log environment check
     console.log('=== ChatKit Session Creation Start ===');
     console.log('Environment:', process.env.NODE_ENV);
     
     // 1. Get the userId from the client's request body
+    // This part is new
     const body = await request.json();
     const userId = body.userId;
 
+    // 2. Add a check for the userId
+    // This part is new
     if (!userId) {
       console.error('❌ Missing userId in request body');
       return NextResponse.json(
         { error: 'Missing userId in request body' },
-        { status: 400 } // This is a true 400 error
+        { status: 400 } 
       );
     }
     console.log('Requesting session for user:', userId);
+
     
     const apiKey = process.env.OPENAI_API_KEY;
     const workflowId = process.env.OPENAI_WORKFLOW_ID;
 
-    // ... (your existing env var checks are good)
-    if (!apiKey) { /* ... */ }
-    if (!workflowId) { /* ... */ }
+    if (!apiKey) {
+      console.error('❌ OPENAI_API_KEY not configured');
+      return NextResponse.json(
+        { error: 'OpenAI API key not configured' },
+        { status: 500 }
+      );
+    }
+
+    if (!workflowId) {
+      console.error('❌ OPENAI_WORKFLOW_ID not configured');
+      return NextResponse.json(
+        { error: 'OpenAI workflow ID not configured' },
+        { status: 500 }
+      );
+    }
 
     console.log('✅ Environment variables validated');
     console.log('Creating ChatKit session with workflow:', workflowId);
@@ -42,12 +56,17 @@ export async function POST(request: NextRequest) {
         workflow: {
           id: workflowId,
         },
-        // 2. Add the user object to the OpenAI API call
-        user: {
-          id: userId,
-        },
+        // ===================================================
+        //
+        // 3. THIS IS THE CRITICAL FIX
+        // You must add the user ID here.
+        //
+        user: userId,
+        //
+        // ===================================================
       }),
     });
+
     console.log('OpenAI API response status:', response.status);
 
     if (!response.ok) {
