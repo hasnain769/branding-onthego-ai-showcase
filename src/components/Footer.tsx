@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Linkedin, Twitter, Youtube, Mail } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -55,22 +55,22 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm text-background/70">
               <li>
-                <Link to="/" className="hover:text-primary transition-colors">
+                <Link href="/" className="hover:text-primary transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="hover:text-primary transition-colors">
+                <Link href="/services" className="hover:text-primary transition-colors">
                   Services
                 </Link>
               </li>
               <li>
-                <Link to="/templates" className="hover:text-primary transition-colors">
+                <Link href="/templates" className="hover:text-primary transition-colors">
                   Templates
                 </Link>
               </li>
               <li>
-                <Link to="/case-studies" className="hover:text-primary transition-colors">
+                <Link href="/case-studies" className="hover:text-primary transition-colors">
                   Case Studies
                 </Link>
               </li>
@@ -82,12 +82,12 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-background/70">
               <li>
-                <Link to="/about" className="hover:text-primary transition-colors">
+                <Link href="/about" className="hover:text-primary transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-primary transition-colors">
+                <Link href="/contact" className="hover:text-primary transition-colors">
                   Contact
                 </Link>
               </li>

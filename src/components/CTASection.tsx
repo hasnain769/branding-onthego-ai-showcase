@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Button } from "./ui/button";
 
 interface CTASectionProps {
@@ -27,7 +27,7 @@ const CTASection = ({
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in">
           <Button variant="outline-white" size="xl" asChild>
-            <Link to={primaryButtonLink}>{primaryButtonText}</Link>
+            <Link href={primaryButtonLink}>{primaryButtonText}</Link>
           </Button>
         </div>
         {secondaryText && (

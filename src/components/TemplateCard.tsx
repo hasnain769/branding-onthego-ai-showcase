@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom"; // Import Link
+import Link from "next/link";
 
 interface TemplateCardProps {
   icon: LucideIcon;
@@ -21,7 +21,7 @@ const TemplateCard = ({ icon: Icon, title, description, link }: TemplateCardProp
           <p className="text-sm text-muted-foreground mb-4">{description}</p>
           
             <Button variant="link" className="p-0 h-auto text-sm" asChild>
-              <Link to="/templates">
+              <Link href="/templates">
                 View Template →
               </Link>
             </Button>

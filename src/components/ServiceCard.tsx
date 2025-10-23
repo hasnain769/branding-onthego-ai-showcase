@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Button } from "./ui/button";
 
 interface ServiceCardProps {
@@ -26,7 +26,7 @@ const ServiceCard = ({ icon: Icon, title, description, link }: ServiceCardProps)
   );
 
   return link ? (
-    <Link to={link} className="group bg-card border border-border rounded-2xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-fade-in block">
+    <Link href={link} className="group bg-card border border-border rounded-2xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-fade-in block">
       {content}
     </Link>
   ) : (
