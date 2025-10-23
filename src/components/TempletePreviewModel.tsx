@@ -101,6 +101,16 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
       if (isCleanedUp) return;
       
       try {
+        console.log('ChatKit: Waiting for custom element to be defined...');
+        
+        // Wait for the custom element to be defined
+        if (customElements && typeof customElements.whenDefined === 'function') {
+          await customElements.whenDefined('openai-chatkit');
+          console.log('ChatKit: Custom element is defined');
+        }
+        
+        if (isCleanedUp) return;
+        
         console.log('ChatKit: Fetching session...');
         
         // Fetch session from your API
@@ -120,17 +130,18 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
 
         if (isCleanedUp) return;
 
-        // Wait for the element to be available
-        const maxAttempts = 20;
+        // Wait for the element to be available in the DOM
+        const maxAttempts = 30;
         let attempts = 0;
         
         const waitForElement = () => {
           if (isCleanedUp) return;
           
           const chatKitElement = chatKitRef.current as any;
+          console.log(`ChatKit: Attempt ${attempts + 1}/${maxAttempts}, element:`, chatKitElement);
           
           if (chatKitElement && data.client_secret) {
-            console.log('ChatKit: Setting client secret...');
+            console.log('ChatKit: Element found, setting client secret...');
             chatKitElement.clientSecret = data.client_secret;
 
             // Add event listeners
@@ -152,10 +163,11 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
             setChatKitLoading(false);
           } else if (attempts < maxAttempts) {
             attempts++;
-            setTimeout(waitForElement, 100);
+            setTimeout(waitForElement, 200);
           } else {
             console.error('ChatKit: Element not found after max attempts');
-            setChatKitError('Failed to initialize chat widget');
+            console.error('ChatKit: Ref value:', chatKitRef.current);
+            setChatKitError('Failed to initialize chat widget - element not found');
             setChatKitLoading(false);
           }
         };
@@ -185,20 +197,20 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
       script.onload = () => {
         console.log('ChatKit: Script loaded');
         script.dataset.loaded = 'true';
-        // Give the custom element time to register
-        setTimeout(() => initializeChatKit(), 100);
+        // Give the custom element more time to register
+        setTimeout(() => initializeChatKit(), 500);
       };
       
       document.head.appendChild(script);
     } else if (script.dataset.loaded === 'true') {
       console.log('ChatKit: Using cached script');
       // Script already loaded
-      setTimeout(() => initializeChatKit(), 100);
+      setTimeout(() => initializeChatKit(), 500);
     } else {
       // Script is loading
       console.log('ChatKit: Waiting for script to load...');
       script.addEventListener('load', () => {
-        setTimeout(() => initializeChatKit(), 100);
+        setTimeout(() => initializeChatKit(), 500);
       });
     }
 
