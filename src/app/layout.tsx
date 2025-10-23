@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
+import Script from "next/script"; // <-- 1. IMPORT THE SCRIPT COMPONENT
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -40,6 +41,12 @@ export default function RootLayout({
             </TooltipProvider>
           </QueryProvider>
         </HelmetProviderWrapper>
+
+        {/* 2. PLACE THE SCRIPT HERE (before the </body> tag) */}
+        <Script
+          src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
