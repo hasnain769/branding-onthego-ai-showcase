@@ -10,6 +10,20 @@ import { useSearchParams } from "react-router-dom";
 const Templates = () => {
   const templates = [
     {
+      icon: Utensils,
+      title: "Restaurant Reservation Bot",
+      category: "booking",
+      description: "Take reservations, answer menu questions, handle special requests, and manage waitlists.",
+      features: ["Table management", "Menu inquiries", "Special requests", "Waitlist"],
+    },
+    {
+      icon: Briefcase,
+      title: "Professional Services Bot",
+      category: "support",
+      description: "Qualify clients, schedule consultations, explain services, and collect project requirements.",
+      features: ["Client intake", "Consultation booking", "Service catalog", "Proposal requests"],
+    },
+    {
       icon: Store,
       title: "Retail & E-commerce Bot",
       category: "sales",
@@ -43,20 +57,6 @@ const Templates = () => {
       category: "support",
       description: "Support customers, demo features, collect feedback, and route complex issues to your team.",
       features: ["Product demos", "Ticket creation", "Feature requests", "Knowledge base"],
-    },
-    {
-      icon: Utensils,
-      title: "Restaurant Reservation Bot",
-      category: "booking",
-      description: "Take reservations, answer menu questions, handle special requests, and manage waitlists.",
-      features: ["Table management", "Menu inquiries", "Special requests", "Waitlist"],
-    },
-    {
-      icon: Briefcase,
-      title: "Professional Services Bot",
-      category: "support",
-      description: "Qualify clients, schedule consultations, explain services, and collect project requirements.",
-      features: ["Client intake", "Consultation booking", "Service catalog", "Proposal requests"],
     },
     {
       icon: GraduationCap,

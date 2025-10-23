@@ -31,8 +31,8 @@ interface TemplatePreviewModalProps {
 }
 
 const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModalProps) => {
-  const shouldShowVapiWidget = template?.title === "Restaurant Reservation Bot";
-  const shouldShowFastbotsWidget = template?.title === "Salon & Spa Booking Bot";
+  const isVoiceBot = template?.title === "Restaurant Reservation Bot" || template?.title === "Professional Services Bot";
+  const shouldShowVapiWidget = isVoiceBot;
 
   useEffect(() => {
     if (isOpen && shouldShowVapiWidget) {
@@ -96,15 +96,20 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
               <Sparkles className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-lg mb-2">Try the Live Demo</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Click the phone button in the bottom right to start a voice conversation with this AI agent. 
-                  Ask questions relevant to {template.title.toLowerCase()} to experience how it works.
-                </p>
+                {isVoiceBot ? (
+                  <p className="text-sm text-muted-foreground mb-4">
+                    This bot supports both <strong>voice</strong> and <strong>text</strong>. Click the phone button to start a voice call, or use the chat window to type your questions.
+                  </p>
+                ) : (
+                  <p className="text-sm text-muted-foreground mb-4">
+                    This is a <strong>text-only</strong> bot. Use the chat window below to interact with the AI and see it in action.
+                  </p>
+                )}
               </div>
             </div>
             
             <div className="grid md:grid-cols-3 gap-4 mt-4">
-              <div className="flex items-start gap-3 bg-background/50 rounded-lg p-3">
+              <div className={`flex items-start gap-3 bg-background/50 rounded-lg p-3 ${isVoiceBot ? '' : 'opacity-50'}`}>
                 <Phone className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
                   <div className="font-medium text-sm">Voice Enabled</div>
@@ -178,7 +183,17 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
                   </div>
                 </>
               )}
-              {!template.title.includes("Salon") && !template.title.includes("Retail") && !template.title.includes("Real Estate") && (
+              {template.title.includes("Professional Services") && (
+                <>
+                  <div className="text-sm p-3 bg-muted/50 rounded-lg border border-border">
+                    "I need to schedule a consultation with a lawyer."
+                  </div>
+                  <div className="text-sm p-3 bg-muted/50 rounded-lg border border-border">
+                    "What are your billing rates for design services?"
+                  </div>
+                </>
+              )}
+              {!template.title.includes("Salon") && !template.title.includes("Retail") && !template.title.includes("Real Estate") && !template.title.includes("Professional Services") && (
                 <>
                   <div className="text-sm p-3 bg-muted/50 rounded-lg border border-border">
                     "Tell me more about your services"
@@ -191,33 +206,25 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
             </div>
           </div>
 
-          {/* Vapi Widget - Only for Restaurant Reservation Bot */}
-          {shouldShowVapiWidget && (
-            <div className="space-y-3">
-              <h3 className="font-semibold text-lg">Live Voice Demo:</h3>
+          {/* Live Demo Widgets */}
+          <div className="space-y-3">
+            <h3 className="font-semibold text-lg">{isVoiceBot ? "Live Voice & Chat Demo" : "Live Chat Demo"}</h3>
+            {shouldShowVapiWidget ? (
               <div className="relative">
                 <vapi-widget 
                   assistant-id="c72f770b-2c30-4021-a81e-6a4f85f176e9" 
                   public-key="992bd5fb-c74c-4955-9371-4ae0b3aec062">
                 </vapi-widget>
               </div>
-            </div>
-          )}
-
-          {/* Fastbots Chatbot Widget - Only for Salon & Spa Booking Bot */}
-          {shouldShowFastbotsWidget && (
-            <div className="space-y-3">
-              <h3 className="font-semibold text-lg">Live Chat Demo:</h3>
+            ) : (
               <div className="flex justify-center">
-                <iframe
-                  style={{ width: "400px", height: "600px" }}
-                  src="https://app.fastbots.ai/embed/cmalkz9s50dlsn8lt1jyxyr83"
-                  title="Salon & Spa Booking Chatbot"
-                  className="border border-border rounded-lg shadow-lg"
-                />
+                {/* Placeholder for a text-only chat widget */}
+                <div className="w-[400px] h-[600px] bg-muted/50 border border-border rounded-lg shadow-lg flex items-center justify-center">
+                  <p className="text-muted-foreground">Text-only chat widget coming soon.</p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
