@@ -8,7 +8,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Phone, MessageSquare, Clock, Sparkles, Loader2 } from "lucide-react";
+import {
+  Phone,
+  MessageSquare,
+  Clock,
+  Sparkles,
+  Loader2,
+  Lightbulb, // 1. Imported Lightbulb
+} from "lucide-react";
 import Vapi from "@vapi-ai/web";
 import { ChatKit, useChatKit } from "@openai/chatkit-react";
 
@@ -33,6 +40,7 @@ interface TemplatePreviewModalProps {
     title: string;
     description: string;
     features: string[];
+    sampleQuestions: string[]; // 2. Added questions to the interface
   } | null;
 }
 
@@ -111,12 +119,8 @@ function ChatKitWidget() {
 
   return (
     <>
-      <div className="w-full h-[600px] border border-border rounded-lg overflow-hidden relative bg-blue-100" data-chatkit-root>
-        {(() => { console.log("Attempting to render ChatKit component with control:", control); return null; })()}
+      <div className="w-full h-[600px] border border-border rounded-lg overflow-hidden relative" data-chatkit-root>
         <ChatKit control={control} className="h-full w-full" />
-      </div>
-      <div className="absolute bottom-2 right-2 text-xs text-muted-foreground opacity-50">
-        (debug active)
       </div>
     </>
   );
@@ -243,6 +247,25 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
               ))}
             </div>
           </div>
+
+          {/* 3. ✅ Try Asking Section - ADDED THIS BLOCK */}
+          {template.sampleQuestions && template.sampleQuestions.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="font-semibold text-lg">Try Asking:</h3>
+              <div className="grid md:grid-cols-2 gap-3">
+                {template.sampleQuestions.map((question, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border"
+                  >
+                    <Lightbulb className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+                    <span className="text-sm italic text-muted-foreground">"{question}"</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {/* End of added block */}
 
           {/* ✅ Live Demo Widgets */}
           <div className="space-y-3">

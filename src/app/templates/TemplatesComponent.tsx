@@ -15,6 +15,11 @@ const TemplatesComponent = () => {
       category: "booking",
       description: "Take reservations, answer menu questions, handle special requests, and manage waitlists.",
       features: ["Table management", "Menu inquiries", "Special requests", "Waitlist"],
+      sampleQuestions: [
+        "Do you have a table for 2 tonight at 7pm?",
+        "Can I see today's menu and specials?",
+        "I have a peanut allergy — can the kitchen accommodate?"
+      ],
     },
     {
       icon: Briefcase,
@@ -22,13 +27,23 @@ const TemplatesComponent = () => {
       category: "support",
       description: "Qualify clients, schedule consultations, explain services, and collect project requirements.",
       features: ["Client intake", "Consultation booking", "Service catalog", "Proposal requests"],
+      sampleQuestions: [
+        "How can I schedule a consultation with your team?",
+        "What services do you offer for small businesses?",
+        "Can you provide a quote or proposal for my project?"
+      ],
     },
     {
       icon: Store,
       title: "Retail & E-commerce Bot",
       category: "sales",
       description: "Handle product inquiries, track orders, process returns, and capture leads 24/7.",
-      features: ["Product catalog integration", "Order tracking", "Returns processing", "Upsell recommendations"],
+      features: ["Food Ordering", "Menu navigations", "Diet plans", "customize experience"],
+      sampleQuestions: [
+        "I want to order a beef burger with no onions",
+        "Where is my order ",
+        "can you suggest me some healthy meal options?"
+      ],
     },
     {
       icon: Scissors,
@@ -36,6 +51,11 @@ const TemplatesComponent = () => {
       category: "booking",
       description: "Book appointments, send reminders, manage staff schedules, and handle client preferences.",
       features: ["Online booking", "SMS reminders", "Staff management", "Client profiles"],
+      sampleQuestions: [
+        "Can I book a haircut and color for Saturday at 2pm?",
+        "What are your service prices and available stylists?",
+        "How do I reschedule or cancel my appointment?"
+      ],
     },
     {
       icon: Heart,
@@ -43,6 +63,11 @@ const TemplatesComponent = () => {
       category: "booking",
       description: "Schedule patient appointments, answer common health questions, and send appointment reminders.",
       features: ["HIPAA compliant", "Patient scheduling", "Prescription reminders", "Symptom checker"],
+      sampleQuestions: [
+        "How can I book an appointment with Dr. Smith next week?",
+        "Are you accepting new patients and do you take my insurance?",
+        "What should I do for acute allergy symptoms right now?"
+      ],
     },
     {
       icon: Home,
@@ -50,6 +75,11 @@ const TemplatesComponent = () => {
       category: "sales",
       description: "Qualify leads, schedule property viewings, provide listing information, and follow up automatically.",
       features: ["Lead qualification", "Viewing scheduler", "Property details", "Market updates"],
+      sampleQuestions: [
+        "Is the 3-bed house on Maple Ave still available for viewing?",
+        "Can you schedule a showing for Saturday afternoon?",
+        "What is the asking price and HOA fees for this listing?"
+      ],
     },
     {
       icon: Monitor,
@@ -57,6 +87,11 @@ const TemplatesComponent = () => {
       category: "support",
       description: "Support customers, demo features, collect feedback, and route complex issues to your team.",
       features: ["Product demos", "Ticket creation", "Feature requests", "Knowledge base"],
+      sampleQuestions: [
+        "How do I reset my account password?",
+        "How can I enable feature X for my team?",
+        "I found a bug — how do I report it and get support?"
+      ],
     },
     {
       icon: GraduationCap,
@@ -64,6 +99,11 @@ const TemplatesComponent = () => {
       category: "support",
       description: "Answer course questions, manage enrollments, provide student support, and collect feedback.",
       features: ["Course information", "Enrollment", "Student support", "Resource library"],
+      sampleQuestions: [
+        "How do I enroll in the Data Science bootcamp?",
+        "What are the prerequisites for the advanced course?",
+        "When does the next cohort start and what is the schedule?"
+      ],
     },
     {
       icon: ShoppingBag,
@@ -71,6 +111,11 @@ const TemplatesComponent = () => {
       category: "sales",
       description: "Help customers find products, check inventory, provide store hours, and capture feedback.",
       features: ["Product finder", "Inventory check", "Store information", "Customer feedback"],
+      sampleQuestions: [
+        "Do you have these red sneakers in size 8?",
+        "What are your store hours this weekend?",
+        "Can I reserve an item online for in-store pickup?"
+      ],
     },
   ];
 
