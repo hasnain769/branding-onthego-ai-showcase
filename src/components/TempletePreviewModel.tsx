@@ -36,11 +36,11 @@ interface TemplatePreviewModalProps {
   } | null;
 }
 
-// ✅ ChatKit Component (Production Safe)
 function ChatKitWidget() {
   console.log("🧠 [ChatKitWidget] init @", new Date().toISOString());
 
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // New loading state
 
   let control: ReturnType<typeof useChatKit>["control"] | null = null;
 
@@ -81,6 +81,7 @@ function ChatKitWidget() {
 
           const { client_secret } = JSON.parse(text);
           console.log("✅ [ChatKitWidget] Client secret received (length):", client_secret?.length);
+          setIsLoading(false); // Set loading to false after successful secret retrieval
           return client_secret;
         },
       },
@@ -90,6 +91,7 @@ function ChatKitWidget() {
   } catch (err: any) {
     console.error("❌ [ChatKitWidget] Init error:", err);
     setError(err.message);
+    setIsLoading(false); // Also set loading to false on error
   }
 
   if (error) {
@@ -100,7 +102,7 @@ function ChatKitWidget() {
     );
   }
 
-  if (!control) {
+  if (isLoading || !control) {
     return (
       <div className="flex items-center justify-center w-full h-[600px] border border-border rounded-lg bg-muted/30 text-muted-foreground text-sm">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -112,7 +114,7 @@ function ChatKitWidget() {
   return (
     <>
       <div className="w-full h-[600px] border border-border rounded-lg overflow-hidden relative bg-blue-100" data-chatkit-root>
-        {(() => { console.log("Attempting to render ChatKit component with control:", control); return null; })()}
+        {console.log("Attempting to render ChatKit component with control:", control)}
         <ChatKit control={control} className="h-full w-full" />
       </div>
       <div className="absolute bottom-2 right-2 text-xs text-muted-foreground opacity-50">
