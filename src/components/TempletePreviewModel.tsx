@@ -33,111 +33,83 @@ interface TemplatePreviewModalProps {
 }
 
 // ChatKit Component
-// ChatKit Component
 function ChatKitWidget() {
-  // Prevent SSR execution
-  if (typeof window === "undefined") {
-    console.warn("ChatKitWidget: running in SSR context — skipping render.");
-    return null;
-  }
+  console.log("🧠 [ChatKitWidget] init @", new Date().toISOString());
 
-  const [initTime] = React.useState(() => Date.now());
-  console.groupCollapsed(`🧠 ChatKitWidget init @ ${new Date(initTime).toISOString()}`);
-
-  // Runtime environment info
-  console.log("Environment:", process.env.NODE_ENV);
-  console.log("Origin:", window.location.origin);
-
-  const { control, status, error } = useChatKit({
+  const { control } = useChatKit({
     api: {
       async getClientSecret(existing) {
-        console.groupCollapsed("🔑 ChatKit.getClientSecret()");
-        try {
-          if (existing) console.log("Existing client secret detected:", existing);
+        console.log("🔑 [ChatKitWidget] getClientSecret called. existing:", existing);
 
-          // Persistent userId
-          let userId: string | null = null;
-          try {
-            userId = localStorage.getItem("chatkit_user_id");
-            if (!userId) {
-              userId = `user_${Math.random().toString(36).substring(2, 15)}`;
-              localStorage.setItem("chatkit_user_id", userId);
-              console.log("Generated new userId:", userId);
-            } else {
-              console.log("Found existing userId:", userId);
-            }
-          } catch (e) {
-            console.error("localStorage access failed:", e);
-          }
-
-          const url = `${window.location.origin}/api/chatkit/session`;
-          console.log("POST →", url, "body:", { userId });
-
-          const res = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId }),
-          });
-
-          console.log("Response status:", res.status);
-          const text = await res.text();
-          console.log("Raw response text:", text);
-
-          if (!res.ok) throw new Error(`HTTP ${res.status}: ${text}`);
-
-          let data;
-          try {
-            data = JSON.parse(text);
-          } catch (e) {
-            console.error("Failed to parse JSON:", e);
-            throw new Error("Invalid JSON in /api/chatkit/session response");
-          }
-
-          if (!data?.client_secret) {
-            console.error("Missing client_secret in response:", data);
-            throw new Error("No client_secret returned");
-          }
-
-          console.log("✅ Client secret received:", data.client_secret);
-          console.groupEnd();
-          return data.client_secret;
-        } catch (err) {
-          console.error("❌ getClientSecret error:", err);
-          console.groupEnd();
-          throw err;
+        // Persistent userId
+        let userId = localStorage.getItem('chatkit_user_id');
+        if (!userId) {
+          userId = `user_${Math.random().toString(36).substring(2, 15)}`;
+          localStorage.setItem('chatkit_user_id', userId);
+          console.log("🆕 [ChatKitWidget] Generated new userId:", userId);
+        } else {
+          console.log("♻️ [ChatKitWidget] Reusing existing userId:", userId);
         }
+
+        const body = { userId };
+        console.log("🌐 [ChatKitWidget] POST /api/chatkit/session:", body);
+
+        const res = await fetch('/api/chatkit/session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        console.log("📡 [ChatKitWidget] Response status:", res.status);
+
+        const text = await res.text();
+        console.log("📨 [ChatKitWidget] Raw response text:", text);
+
+        if (!res.ok) {
+          console.error("❌ [ChatKitWidget] Failed to get client secret:", res.status, text);
+          throw new Error(`Failed to get client secret: ${res.status}`);
+        }
+
+        const { client_secret } = JSON.parse(text);
+        console.log("✅ [ChatKitWidget] Client secret received (length):", client_secret?.length);
+        return client_secret;
       },
     },
   });
 
-  // Track status & errors
-  React.useEffect(() => {
-    console.log("ChatKitWidget status changed →", status);
-  }, [status]);
+  // Log lifecycle events
+  useEffect(() => {
+    console.log("🎯 [ChatKitWidget] Mounted. control:", control);
 
-  React.useEffect(() => {
-    if (error) console.error("ChatKitWidget error →", error);
-  }, [error]);
+    // Check if the iframe or root ChatKit DOM node appears
+    const interval = setInterval(() => {
+      const iframe = document.querySelector('iframe[src*="chat.openai.com"], iframe[src*="chatkit"]');
+      const chatkitRoot = document.querySelector('[data-chatkit-root]');
+      console.log("🔍 [ChatKitWidget] DOM check:", {
+        iframeFound: !!iframe,
+        chatkitRootFound: !!chatkitRoot,
+      });
+    }, 2000);
 
-  React.useEffect(() => {
-    console.log("ChatKitWidget mounted ✅");
-    return () => console.log("ChatKitWidget unmounted 🧹");
-  }, []);
-
-  console.groupEnd();
+    return () => {
+      console.log("🧹 [ChatKitWidget] Unmounted.");
+      clearInterval(interval);
+    };
+  }, [control]);
 
   return (
-    <div className="w-full h-[600px] border border-border rounded-lg overflow-hidden">
-      {error ? (
-        <div className="p-4 text-red-500 text-sm">
-          Error loading ChatKit widget — check console for details.
-        </div>
-      ) : (
-        <ChatKit control={control} className="h-full w-full" />
-      )}
+    <div
+      className="w-full h-[600px] border border-border rounded-lg overflow-hidden relative"
+      data-chatkit-root
+    >
+      <ChatKit control={control} className="h-full w-full" />
+      <div className="absolute bottom-2 right-2 text-xs text-muted-foreground opacity-50">
+        (debug active)
+      </div>
     </div>
   );
 }
+
 
 const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModalProps) => {
   const isVoiceBot = template?.title === "Restaurant Reservation Bot" || template?.title === "Professional Services Bot";
