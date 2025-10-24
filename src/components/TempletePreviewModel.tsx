@@ -35,48 +35,106 @@ interface TemplatePreviewModalProps {
 // ChatKit Component
 // ChatKit Component
 function ChatKitWidget() {
-  const { control } = useChatKit({
+  // Prevent SSR execution
+  if (typeof window === "undefined") {
+    console.warn("ChatKitWidget: running in SSR context — skipping render.");
+    return null;
+  }
+
+  const [initTime] = React.useState(() => Date.now());
+  console.groupCollapsed(`🧠 ChatKitWidget init @ ${new Date(initTime).toISOString()}`);
+
+  // Runtime environment info
+  console.log("Environment:", process.env.NODE_ENV);
+  console.log("Origin:", window.location.origin);
+
+  const { control, status, error } = useChatKit({
     api: {
       async getClientSecret(existing) {
-        if (existing) {
-          console.log('ChatKit: Refreshing existing session');
+        console.groupCollapsed("🔑 ChatKit.getClientSecret()");
+        try {
+          if (existing) console.log("Existing client secret detected:", existing);
+
+          // Persistent userId
+          let userId: string | null = null;
+          try {
+            userId = localStorage.getItem("chatkit_user_id");
+            if (!userId) {
+              userId = `user_${Math.random().toString(36).substring(2, 15)}`;
+              localStorage.setItem("chatkit_user_id", userId);
+              console.log("Generated new userId:", userId);
+            } else {
+              console.log("Found existing userId:", userId);
+            }
+          } catch (e) {
+            console.error("localStorage access failed:", e);
+          }
+
+          const url = `${window.location.origin}/api/chatkit/session`;
+          console.log("POST →", url, "body:", { userId });
+
+          const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId }),
+          });
+
+          console.log("Response status:", res.status);
+          const text = await res.text();
+          console.log("Raw response text:", text);
+
+          if (!res.ok) throw new Error(`HTTP ${res.status}: ${text}`);
+
+          let data;
+          try {
+            data = JSON.parse(text);
+          } catch (e) {
+            console.error("Failed to parse JSON:", e);
+            throw new Error("Invalid JSON in /api/chatkit/session response");
+          }
+
+          if (!data?.client_secret) {
+            console.error("Missing client_secret in response:", data);
+            throw new Error("No client_secret returned");
+          }
+
+          console.log("✅ Client secret received:", data.client_secret);
+          console.groupEnd();
+          return data.client_secret;
+        } catch (err) {
+          console.error("❌ getClientSecret error:", err);
+          console.groupEnd();
+          throw err;
         }
-
-        console.log('ChatKit: Fetching client secret...');
-
-        // 1. Generate or retrieve a persistent user ID
-        let userId = localStorage.getItem('chatkit_user_id');
-        if (!userId) {
-          userId = `user_${Math.random().toString(36).substring(2, 15)}`;
-          localStorage.setItem('chatkit_user_id', userId);
-        }
-        console.log('ChatKit: Using user ID:', userId);
-        
-        const res = await fetch('/api/chatkit/session', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          // 2. Send the user ID in the request body
-          body: JSON.stringify({ userId: userId }),
-        });
-
-        if (!res.ok) {
-          const errorData = await res.json();
-          console.error('Error from /api/chatkit/session:', errorData);
-          throw new Error(`Failed to get client secret: ${res.status}`);
-        }
-
-        const { client_secret } = await res.json();
-        console.log('ChatKit: Client secret received');
-        return client_secret;
       },
     },
   });
 
+  // Track status & errors
+  React.useEffect(() => {
+    console.log("ChatKitWidget status changed →", status);
+  }, [status]);
+
+  React.useEffect(() => {
+    if (error) console.error("ChatKitWidget error →", error);
+  }, [error]);
+
+  React.useEffect(() => {
+    console.log("ChatKitWidget mounted ✅");
+    return () => console.log("ChatKitWidget unmounted 🧹");
+  }, []);
+
+  console.groupEnd();
+
   return (
     <div className="w-full h-[600px] border border-border rounded-lg overflow-hidden">
-      <ChatKit control={control} className="h-full w-full" />
+      {error ? (
+        <div className="p-4 text-red-500 text-sm">
+          Error loading ChatKit widget — check console for details.
+        </div>
+      ) : (
+        <ChatKit control={control} className="h-full w-full" />
+      )}
     </div>
   );
 }
