@@ -110,12 +110,15 @@ function ChatKitWidget() {
   }
 
   return (
-    <div className="w-full h-[600px] border border-border rounded-lg overflow-hidden relative" data-chatkit-root>
-      <ChatKit control={control} className="h-full w-full" />
+    <>
+      <div className="w-full h-[600px] border border-border rounded-lg overflow-hidden relative bg-blue-100" data-chatkit-root>
+        {(() => { console.log("Attempting to render ChatKit component with control:", control); return null; })()}
+        <ChatKit control={control} className="h-full w-full" />
+      </div>
       <div className="absolute bottom-2 right-2 text-xs text-muted-foreground opacity-50">
         (debug active)
       </div>
-    </div>
+    </>
   );
 }
 
@@ -254,7 +257,7 @@ const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModa
                 ></vapi-widget>
               </div>
             ) : shouldShowChatKit ? (
-              <ChatKitWidget />
+              <ChatKitWidget key={template.title} />
             ) : (
               <div className="flex justify-center">
                 <div className="w-[400px] h-[600px] bg-muted/50 border border-border rounded-lg shadow-lg flex items-center justify-center">
