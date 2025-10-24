@@ -64,6 +64,10 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        spin: {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
         "accordion-down": {
           from: {
             height: "0",
@@ -102,6 +106,7 @@ export default {
         },
       },
       animation: {
+        spin: 'spin 1s linear infinite',
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.6s ease-out",

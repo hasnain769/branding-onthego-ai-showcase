@@ -120,6 +120,7 @@ function ChatKitWidget() {
 }
 
 const TemplatePreviewModal = ({ isOpen, onClose, template }: TemplatePreviewModalProps) => {
+  console.log("🔄 [TemplatePreviewModal] Render. isOpen:", isOpen, "template:", template?.title);
   const isVoiceBot =
     template?.title === "Restaurant Reservation Bot" ||
     template?.title === "Professional Services Bot";
