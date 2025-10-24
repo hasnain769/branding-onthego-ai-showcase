@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
     console.log('Requesting session for user:', userId);
 
     
-    const apiKey = process.env.OPENAI_API_KEY;
-    const workflowId = process.env.OPENAI_WORKFLOW_ID;
+    const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+    const workflowId = process.env.NEXT_PUBLIC_OPENAI_WORKFLOW_ID;
 
     if (!apiKey) {
       console.error('❌ OPENAI_API_KEY not configured');
