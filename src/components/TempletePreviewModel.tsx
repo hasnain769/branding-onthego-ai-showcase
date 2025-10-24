@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Phone, MessageSquare, Clock, Sparkles } from "lucide-react";
+import { Phone, MessageSquare, Clock, Sparkles, Loader2 } from "lucide-react";
 import Vapi from "@vapi-ai/web";
 import { ChatKit, useChatKit } from "@openai/chatkit-react";
 
@@ -41,7 +41,6 @@ function ChatKitWidget() {
   console.log("🧠 [ChatKitWidget] init @", new Date().toISOString());
 
   const [error, setError] = useState<string | null>(null);
-  const [ready, setReady] = useState(false);
 
   let control: ReturnType<typeof useChatKit>["control"] | null = null;
 
@@ -66,7 +65,7 @@ function ChatKitWidget() {
 
           const res = await fetch("/api/chatkit/session", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body),
           });
 
@@ -93,21 +92,6 @@ function ChatKitWidget() {
     setError(err.message);
   }
 
-  useEffect(() => {
-    setReady(true);
-
-    const interval = setInterval(() => {
-      const iframe = document.querySelector('iframe[src*="chatkit"]');
-      const chatkitRoot = document.querySelector("[data-chatkit-root]");
-      console.log("🔍 [ChatKitWidget] DOM check:", {
-        iframeFound: !!iframe,
-        chatkitRootFound: !!chatkitRoot,
-      });
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   if (error) {
     return (
       <div className="flex items-center justify-center w-full h-[600px] bg-red-50 border border-red-300 rounded-lg text-red-700 text-sm">
@@ -116,10 +100,11 @@ function ChatKitWidget() {
     );
   }
 
-  if (!ready || !control) {
+  if (!control) {
     return (
       <div className="flex items-center justify-center w-full h-[600px] border border-border rounded-lg bg-muted/30 text-muted-foreground text-sm">
-        Initializing ChatKit...
+        <Loader2 className="h-8 w-8 animate-spin" />
+        <span className="ml-2">Initializing ChatKit...</span>
       </div>
     );
   }
