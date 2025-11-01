@@ -1,4 +1,5 @@
   import Link from "next/link";
+  import Image from "next/image";
   import { PhoneCall, ShoppingCart, Calendar, Mic, Store, Scissors, Heart, Home, Monitor, ArrowRight, CheckCircle2 } from "lucide-react";
   import ServiceCard from "@/components/ServiceCard";
   import TemplateCard from "@/components/TemplateCard";
@@ -74,14 +75,17 @@
         {/* Hero Section */}
         <header 
           className="relative pt-32 pb-20 overflow-hidden"
-          style={{
-            backgroundImage: `linear-gradient(135deg, rgba(46, 144, 255, 0.95), rgba(124, 58, 237, 0.95)), url(${heroBg.src})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
           role="banner"
           aria-label="Hero section"
         >
+          <Image
+            src={heroBg}
+            alt="Hero background"
+            fill
+            className="object-cover -z-10"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-purple-600/95 -z-10" />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center text-white">
               <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">

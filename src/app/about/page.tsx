@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Target, Users, Lightbulb, Award } from "lucide-react";
 import CTASection from "@/components/CTASection";
 import teamPhoto from "@/assets/team-photo.jpg";
@@ -81,10 +82,12 @@ const Page = () => {
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            <img
-              src={teamPhoto.src}
+            <Image
+              src={teamPhoto}
               alt="BrandingOnTheGo team members collaborating on AI chatbot and voice agent development"
               className="w-full rounded-2xl shadow-2xl animate-fade-in"
+              width={1200}
+              height={800}
             />
           </div>
         </div>
